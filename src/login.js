@@ -18,10 +18,7 @@ export default function Login({isLogined, setIsLogined}) {
             checkCredential();
         }
     }
-     
-    // document.getElementById("submit").onclick = function() {
-    //     alert('Clicked!');
-    // }
+
 
     return (
         <>  
@@ -34,13 +31,12 @@ export default function Login({isLogined, setIsLogined}) {
                 Sendbird
             </div>
             <div className='align'>
-                ID : <input id = 'id' type="text"></input>
+                ID : <input id = 'id' type="text" onKeyPress={clickEnter}></input>
             </div>
             <div className='align'>
-                PW : <input id = 'password' type="text"></input>
+                PW : <input id = 'password' type="text" onKeyPress={clickEnter}></input>
             </div>
             <div className='align'>
-                <input value='hi' type="name" onKeyPress={clickEnter} />
                 <button onClick={() => checkCredential()}>login</button>
             </div>
         </>
