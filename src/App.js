@@ -6,9 +6,12 @@ import Login from './login';
 export default function App() {
   const [isLogined, setIsLogined] = useState(false)
 
-  return (
-    <Login />
-  );
+  if (isLogined) {
+    return <Chat />;
+  } else {
+    return <Login isLogined={isLogined} setIsLogined={setIsLogined}/>;
+  }
+
 }
 
 
