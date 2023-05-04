@@ -1,5 +1,4 @@
 import './login.css';
-import Symbol from './Sendbird_Symbol_RGB.png';
 
 export default function Login({isLogined, setIsLogined}) {
 
@@ -22,7 +21,7 @@ export default function Login({isLogined, setIsLogined}) {
 
     return (
         <>  
-            <img src={Symbol}
+            <img src="/Sendbird_Symbol_RGB.png"
             width={300}
             height={300}
             alt = 'Sendbird Symbol'></img>
