@@ -1,17 +1,18 @@
 import './chat_page.css';
 import React, { useState } from 'react';
-import { GroupChannelModule, GroupChannelCreateParams, groupChannelCollection } from '@sendbird/chat/groupChannel';
+import { GroupChannelModule, GroupChannelCreateParams } from '@sendbird/chat/groupChannel';
 import { UserMessageCreateParams } from '@sendbird/chat/message';
 
 
 export default function Chat({ sb }) {
     // const [GroupChannel, setGroupChannel] = useState(null);
+    var GroupChannel;
 
-    const retrieveChannelList = async () => {
-        if (groupChannelCollection.hasMore) {
-            const channels = await groupChannelCollection.loadMore();
-        }
-    }
+    // const retrieveChannelList = async () => {
+    //     if (groupChannelCollection.hasMore) {
+    //         const channels = await groupChannelCollection.loadMore();
+    //     }
+    // }
 
 
 
@@ -19,36 +20,23 @@ export default function Chat({ sb }) {
         const GroupChannelCreateParams = {
             name: channelName
         };
-        const GroupChannel = await sb.groupChannel.createChannel(GroupChannelCreateParams);
-
-        const UserMessageCreateParams = {};
-        UserMessageCreateParams.message = 'hi';
-        GroupChannel.sendUserMessage(UserMessageCreateParams)
-            .onPending((message) => {
-
-            })
-            .onFailed((error) => {
-                console.log("error")
-            })
-            .onSucceeded((message) => {
-
-            });
+        GroupChannel = await sb.groupChannel.createChannel(GroupChannelCreateParams);
     }
 
     function sendMessage(e) {
         if (e.key === 'Enter') {
-            // const UserMessageCreateParams = {};
-            // UserMessageCreateParams.message = 'hi';
-            // GroupChannel.sendUserMessage(UserMessageCreateParams)
-            //     .onPending((message) => {
+            const UserMessageCreateParams = {};
+            UserMessageCreateParams.message = 'hi';
+            GroupChannel.sendUserMessage(UserMessageCreateParams)
+                .onPending((message) => {
 
-            //     })
-            //     .onFailed((error) => {
-            //         console.log("error")
-            //     })
-            //     .onSucceeded((message) => {
+                })
+                .onFailed((error) => {
+                    console.log("error")
+                })
+                .onSucceeded((message) => {
 
-            //     });
+                });
         }
     }
 
