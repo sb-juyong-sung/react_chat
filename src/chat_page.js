@@ -23,7 +23,7 @@ export default function Chat({ sb }) {
         GroupChannel = await sb.groupChannel.createChannel(GroupChannelCreateParams);
     }
 
-    function sendMessage(e) {
+    function clickEnter(e) {
         if (e.key === 'Enter') {
             const UserMessageCreateParams = {};
             UserMessageCreateParams.message = 'hi';
@@ -40,6 +40,21 @@ export default function Chat({ sb }) {
         }
     }
 
+    function sendMessage(textMessage) {
+        const UserMessageCreateParams = {};
+        UserMessageCreateParams.message = textMessage;
+        GroupChannel.sendUserMessage(UserMessageCreateParams)
+            .onPending((message) => {
+
+            })
+            .onFailed((error) => {
+                console.log("error")
+            })
+            .onSucceeded((message) => {
+
+            });
+    }
+
     return (
         <div>
             <div className="align-left">
@@ -49,7 +64,8 @@ export default function Chat({ sb }) {
             <div className="align-left">
                 <h1>"Channel Name"</h1>
                 <hr></hr>
-                message : <input id='message' type="text" onKeyPress={sendMessage}></input>
+                message : <input id='textMessage' type="text" onKeyPress={clickEnter}></input>
+                <button onClick={() => sendMessage(document.getElementById('textMessage').value)}>send</button>
             </div>
             <div className="align-left">
                 channelName : <input id='channelName' type="text"></input>
