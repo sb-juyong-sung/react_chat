@@ -1,6 +1,6 @@
 import './login.css';
 import SendbirdChat from '@sendbird/chat';
-import { OpenChannelModule, SendbirdOpenChat } from '@sendbird/chat/openChannel';
+import { GroupChannelModule} from '@sendbird/chat/groupChannel';
 
 
 
@@ -20,7 +20,7 @@ export default function Login({isLogined, setIsLogined}) {
         const sb = SendbirdChat.init({
             appId: "AF724953-484C-4A31-A559-60D67D914C0A",
             modules: [
-                new OpenChannelModule(),
+                new GroupChannelModule(),
             ],
           }
           );
