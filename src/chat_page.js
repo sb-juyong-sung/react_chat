@@ -7,7 +7,7 @@ import { UserMessageCreateParams } from '@sendbird/chat/message';
 export default function Chat({ sb }) {
     // const [GroupChannel, setGroupChannel] = useState(null);
     var GroupChannel;
-
+    const [channelHeaderName, setChannelHeaderName] = useState('Channel Name');
     // const retrieveChannelList = async () => {
     //     if (groupChannelCollection.hasMore) {
     //         const channels = await groupChannelCollection.loadMore();
@@ -20,6 +20,7 @@ export default function Chat({ sb }) {
         const GroupChannelCreateParams = {
             name: channelName
         };
+        setChannelHeaderName(channelName);
         GroupChannel = await sb.groupChannel.createChannel(GroupChannelCreateParams);
     }
 
@@ -51,7 +52,7 @@ export default function Chat({ sb }) {
                 <hr></hr>
             </div>
             <div className="align-left">
-                <h1>"Channel Name"</h1>
+                <h1>{channelHeaderName}</h1>
                 <hr></hr>
                 message : <input id='textMessage' type="text" onKeyPress={clickEnter}></input>
                 <button onClick={() => sendMessage(document.getElementById('textMessage').value)}>send</button>
