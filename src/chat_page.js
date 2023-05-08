@@ -5,8 +5,7 @@ import { UserMessageCreateParams } from '@sendbird/chat/message';
 
 
 export default function Chat({ sb }) {
-    // const [GroupChannel, setGroupChannel] = useState(null);
-    var GroupChannel;
+    const [newGroupChannel, setGroupChannel] = useState(null);
     const [channelHeaderName, setChannelHeaderName] = useState('Channel Name');
     const [messageList, setMessageList] = useState([]);
     const rendorMessageList = messageList.map((msg) =>
@@ -25,8 +24,9 @@ export default function Chat({ sb }) {
         const GroupChannelCreateParams = {
             name: channelName
         };
-        GroupChannel = await sb.groupChannel.createChannel(GroupChannelCreateParams);
-        // setChannelHeaderName(channelName);
+        const newChannel = await sb.groupChannel.createChannel(GroupChannelCreateParams);
+        setGroupChannel(newChannel);
+        setChannelHeaderName(channelName);
 
     }
 
@@ -40,7 +40,7 @@ export default function Chat({ sb }) {
         const UserMessageCreateParams = {};
         UserMessageCreateParams.message = textMessage;
 
-        GroupChannel.sendUserMessage(UserMessageCreateParams)
+        newGroupChannel.sendUserMessage(UserMessageCreateParams)
             .onPending((message) => {
 
             })
