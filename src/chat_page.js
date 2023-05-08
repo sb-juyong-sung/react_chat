@@ -25,18 +25,7 @@ export default function Chat({ sb }) {
 
     function clickEnter(e) {
         if (e.key === 'Enter') {
-            const UserMessageCreateParams = {};
-            UserMessageCreateParams.message = 'hi';
-            GroupChannel.sendUserMessage(UserMessageCreateParams)
-                .onPending((message) => {
-
-                })
-                .onFailed((error) => {
-                    console.log("error")
-                })
-                .onSucceeded((message) => {
-
-                });
+            sendMessage(document.getElementById('textMessage').value)
         }
     }
 
