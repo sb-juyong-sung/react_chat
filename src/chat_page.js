@@ -1,11 +1,11 @@
 import './chat_page.css';
-
+import { GroupChannelModule } from '@sendbird/chat/groupChannel';
 
 
 
 export default function Chat() {
     
-
+    
 
     return (
         <div>

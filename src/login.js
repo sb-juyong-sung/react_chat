@@ -1,15 +1,15 @@
 import './login.css';
-import SendbirdChat from '@sendbird/chat';
-import { GroupChannelModule} from '@sendbird/chat/groupChannel';
+
+import { GroupChannelModule } from '@sendbird/chat/groupChannel';
 
 
 
 
-export default function Login({isLogined, setIsLogined}) {
+export default function Login({sb, isLogined, setIsLogined}) {
     function checkCredential() {
         const id_value = document.getElementById('id').value;
         const pw_value = document.getElementById('password').value;
-        if (id_value === 'send' && pw_value === 'bird') {
+        if (pw_value === 'bird') {
             connectServer(id_value);
             setIsLogined(true);
 
@@ -17,13 +17,6 @@ export default function Login({isLogined, setIsLogined}) {
     }   
 
     const connectServer = async (id_value) => {
-        const sb = SendbirdChat.init({
-            appId: "AF724953-484C-4A31-A559-60D67D914C0A",
-            modules: [
-                new GroupChannelModule(),
-            ],
-          }
-          );
           const user = await sb.connect(id_value);
     }
 
