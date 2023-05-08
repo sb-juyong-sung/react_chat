@@ -4,13 +4,15 @@ import { GroupChannelModule, GroupChannelCreateParams } from '@sendbird/chat/gro
 import { UserMessageCreateParams } from '@sendbird/chat/message';
 
 
-export default function Chat({sb}) {
-    // const [GroupChannel, setGroupChannel] = useState(0);
+export default function Chat({ sb }) {
+    // const [GroupChannel, setGroupChannel] = useState(null);
 
-    const createChannel = async () => {
-        const GroupChannelCreateParams = {};
+    const createChannel = async (channelName) => {
+        const GroupChannelCreateParams = {
+            name: channelName
+        };
         const GroupChannel = await sb.groupChannel.createChannel(GroupChannelCreateParams);
-
+        
         const UserMessageCreateParams = {};
         UserMessageCreateParams.message = 'hi';
         GroupChannel.sendUserMessage(UserMessageCreateParams)
@@ -23,14 +25,22 @@ export default function Chat({sb}) {
             .onSucceeded((message) => {
 
             });
+    }
 
-    }  
-    
     function sendMessage(e) {
         if (e.key === 'Enter') {
-            // const UserMessageCreateParams = {
-            // };
-            
+            // const UserMessageCreateParams = {};
+            // UserMessageCreateParams.message = 'hi';
+            // GroupChannel.sendUserMessage(UserMessageCreateParams)
+            //     .onPending((message) => {
+
+            //     })
+            //     .onFailed((error) => {
+            //         console.log("error")
+            //     })
+            //     .onSucceeded((message) => {
+
+            //     });
         }
     }
 
@@ -43,10 +53,11 @@ export default function Chat({sb}) {
             <div className="align-left">
                 <h1>"Channel Name"</h1>
                 <hr></hr>
-                message : <input id = 'message' type="text" onKeyPress={sendMessage}></input>
+                message : <input id='message' type="text" onKeyPress={sendMessage}></input>
             </div>
             <div className="align-left">
-                <button onClick={() => createChannel()}>create</button>
+                channelName : <input id='channelName' type="text"></input>
+                <button onClick={() => createChannel(document.getElementById('channelName').value)}>create</button>
             </div>
         </div>
     );
