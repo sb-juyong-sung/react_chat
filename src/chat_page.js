@@ -8,6 +8,11 @@ export default function Chat({ sb }) {
     // const [GroupChannel, setGroupChannel] = useState(null);
     var GroupChannel;
     const [channelHeaderName, setChannelHeaderName] = useState('Channel Name');
+    const [messageList, setMessageList] = useState([]);
+    const rendorMessageList = messageList.map((msg) =>
+        <li>{msg}</li>
+    );
+
     // const retrieveChannelList = async () => {
     //     if (groupChannelCollection.hasMore) {
     //         const channels = await groupChannelCollection.loadMore();
@@ -20,8 +25,9 @@ export default function Chat({ sb }) {
         const GroupChannelCreateParams = {
             name: channelName
         };
-        setChannelHeaderName(channelName);
         GroupChannel = await sb.groupChannel.createChannel(GroupChannelCreateParams);
+        // setChannelHeaderName(channelName);
+
     }
 
     function clickEnter(e) {
@@ -33,6 +39,7 @@ export default function Chat({ sb }) {
     function sendMessage(textMessage) {
         const UserMessageCreateParams = {};
         UserMessageCreateParams.message = textMessage;
+
         GroupChannel.sendUserMessage(UserMessageCreateParams)
             .onPending((message) => {
 
@@ -43,6 +50,7 @@ export default function Chat({ sb }) {
             .onSucceeded((message) => {
 
             });
+        // setMessageList([...messageList, textMessage]);
     }
 
     return (
@@ -53,6 +61,8 @@ export default function Chat({ sb }) {
             </div>
             <div className="align-left">
                 <h1>{channelHeaderName}</h1>
+                {/* <hr></hr>
+                <ul>{rendorMessageList}</ul> */}
                 <hr></hr>
                 message : <input id='textMessage' type="text" onKeyPress={clickEnter}></input>
                 <button onClick={() => sendMessage(document.getElementById('textMessage').value)}>send</button>
