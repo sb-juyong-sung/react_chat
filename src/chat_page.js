@@ -20,7 +20,8 @@ export default function Chat({ sb }) {
 
     const createChannel = async (channelName) => {
         const GroupChannelCreateParams = {
-            name: channelName
+            name: channelName,
+            invitedUserIds: ["lukecha1"]
         };
         const newChannel = await sb.groupChannel.createChannel(GroupChannelCreateParams);
         setGroupChannel(newChannel);
@@ -28,13 +29,11 @@ export default function Chat({ sb }) {
 
         const channelHandler = new GroupChannelHandler({
             onMessageReceived: (newChannel, message) => {
-                console.log(channelHandler.message)
-                setMessageList([...messageList, channelHandler.message]);
-
+                setMessageList((currentMessageList) => [...currentMessageList, message.message]);
             }
         });
 
-        sb.groupChannel.addGroupChannelHandler(channelHandler);
+        sb.groupChannel.addGroupChannelHandler('abcd', channelHandler);
         retrieveChannelList();
     }
 
@@ -76,22 +75,6 @@ export default function Chat({ sb }) {
         console.log(channels);
 
     }
-
-    function receiveMessage() {
-        var channelHandler = new GroupChannelHandler();
-
-        channelHandler.onMessageReceived = function(channel, message) {
-            console.log(message);
-            setMessageList([...messageList, message.message]);
-        }
-        sb.groupChannel.addGroupChannelHandler('UNIQUE_HANDLER_ID', channelHandler);
-    }
-
-
-    useEffect(() => {
-        receiveMessage();
-    }, []);
-
 
     return (
         <div>
