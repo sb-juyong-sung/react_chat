@@ -1,17 +1,24 @@
 import './login.css';
-import Symbol from './Sendbird_Symbol_RGB.png';
 
-export default function Login({isLogined, setIsLogined}) {
+import { GroupChannelModule } from '@sendbird/chat/groupChannel';
 
+
+
+
+export default function Login({sb, isLogined, setIsLogined}) {
     function checkCredential() {
         const id_value = document.getElementById('id').value;
         const pw_value = document.getElementById('password').value;
-        if (id_value === 'send' && pw_value === 'bird') {
+        if (pw_value === 'bird') {
+            connectServer(id_value);
             setIsLogined(true);
+
         }
     }   
 
-
+    const connectServer = async (id_value) => {
+          const user = await sb.connect(id_value);
+    }
 
     function clickEnter(e) {
         if (e.key === 'Enter') {
@@ -22,7 +29,7 @@ export default function Login({isLogined, setIsLogined}) {
 
     return (
         <>  
-            <img src={Symbol}
+            <img src="/Sendbird_Symbol_RGB.png"
             width={300}
             height={300}
             alt = 'Sendbird Symbol'></img>
