@@ -20,8 +20,7 @@ export default function Chat({ sb }) {
 
     const createChannel = async (channelName) => {
         const GroupChannelCreateParams = {
-            name: channelName,
-            invitedUserIds: ["lukecha1"]
+            name: channelName
         };
         const newChannel = await sb.groupChannel.createChannel(GroupChannelCreateParams);
         setGroupChannel(newChannel);
