@@ -1,22 +1,20 @@
 import './chat_page.css';
-import React, { useState } from 'react';
-import { GroupChannelModule, GroupChannelCreateParams } from '@sendbird/chat/groupChannel';
+import React, { useState, useEffect } from 'react';
+import { GroupChannelModule, GroupChannelCreateParams, GroupChannelHandler, GroupChannelCollection } from '@sendbird/chat/groupChannel';
 import { UserMessageCreateParams } from '@sendbird/chat/message';
+import { BaseChannel } from '@sendbird/chat';
+
+
 
 
 export default function Chat({ sb }) {
     const [newGroupChannel, setGroupChannel] = useState(null);
     const [channelHeaderName, setChannelHeaderName] = useState('Channel Name');
     const [messageList, setMessageList] = useState([]);
+    const [channelList, setChannelList] = useState([]);
     const rendorMessageList = messageList.map((msg) =>
         <li>{msg}</li>
     );
-
-    // const retrieveChannelList = async () => {
-    //     if (groupChannelCollection.hasMore) {
-    //         const channels = await groupChannelCollection.loadMore();
-    //     }
-    // }
 
 
 
@@ -28,6 +26,16 @@ export default function Chat({ sb }) {
         setGroupChannel(newChannel);
         setChannelHeaderName(channelName);
 
+        const channelHandler = new GroupChannelHandler({
+            onMessageReceived: (newChannel, message) => {
+                console.log(channelHandler.message)
+                setMessageList([...messageList, channelHandler.message]);
+
+            }
+        });
+
+        sb.groupChannel.addGroupChannelHandler(channelHandler);
+        retrieveChannelList();
     }
 
     function clickEnter(e) {
@@ -50,19 +58,44 @@ export default function Chat({ sb }) {
             .onSucceeded((message) => {
 
             });
-        // setMessageList([...messageList, textMessage]);
+
+        setMessageList([...messageList, textMessage]);
     }
+
+    async function retrieveChannelList() {
+        const groupChannelCollection = sb.groupChannel.createGroupChannelCollection();
+        const channels = [];
+        if (groupChannelCollection.hasMore) {
+            const channelsLoad = await groupChannelCollection.loadMore();
+            channels.push(...channelsLoad);
+        }
+        const channelItems = channels.map((channel) => (
+            <li key={channel.url}>{channel.url}</li>
+        ));
+        setChannelList(channelItems);
+        console.log(channels);
+
+    }
+
+
+    useEffect(() => {
+        retrieveChannelList();
+    }, []);
+
 
     return (
         <div>
             <div className="align-left">
                 <h1>"Channel List"</h1>
+                <ul>
+                    {channelList}
+                </ul>
                 <hr></hr>
             </div>
             <div className="align-left">
                 <h1>{channelHeaderName}</h1>
-                {/* <hr></hr>
-                <ul>{rendorMessageList}</ul> */}
+                <hr></hr>
+                <ul>{rendorMessageList}</ul>
                 <hr></hr>
                 message : <input id='textMessage' type="text" onKeyPress={clickEnter}></input>
                 <button onClick={() => sendMessage(document.getElementById('textMessage').value)}>send</button>
