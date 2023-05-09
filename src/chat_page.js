@@ -1,6 +1,6 @@
 import './chat_page.css';
 import React, { useState, useEffect } from 'react';
-import { GroupChannelModule, GroupChannelCreateParams, GroupChannelHandler, GroupChannelCollection } from '@sendbird/chat/groupChannel';
+import { GroupChannelModule, GroupChannelCreateParams, GroupChannelHandler, GroupChannelCollection, GroupChannelListOrder } from '@sendbird/chat/groupChannel';
 import { UserMessageCreateParams } from '@sendbird/chat/message';
 import { BaseChannel } from '@sendbird/chat';
 
@@ -11,7 +11,7 @@ export default function Chat({ sb }) {
     const [newGroupChannel, setGroupChannel] = useState(null);
     const [channelHeaderName, setChannelHeaderName] = useState('Channel Name');
     const [messageList, setMessageList] = useState([]);
-    const [channelList, setChannelList] = useState([]);
+    const [channelList, setChannelList] = useState(['hi']);
     const rendorMessageList = messageList.map((msg) =>
         <li>{msg}</li>
     );
@@ -72,14 +72,24 @@ export default function Chat({ sb }) {
         const channelItems = channels.map((channel) => (
             <li key={channel.url}>{channel.url}</li>
         ));
-        setChannelList(channelItems);
+        // setChannelList(channels);
         console.log(channels);
 
     }
 
+    function receiveMessage() {
+        var channelHandler = new GroupChannelHandler();
+
+        channelHandler.onMessageReceived = function(channel, message) {
+            console.log(message);
+            setMessageList([...messageList, message.message]);
+        }
+        sb.groupChannel.addGroupChannelHandler('UNIQUE_HANDLER_ID', channelHandler);
+    }
+
 
     useEffect(() => {
-        retrieveChannelList();
+        receiveMessage();
     }, []);
 
 
