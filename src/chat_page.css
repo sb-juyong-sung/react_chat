@@ -39,7 +39,7 @@
     flex-direction: column;
     overflow-y: scroll;
     margin-bottom: 102px;
-    width: 70%;
+    width: 65%;
   }
 
   .channel-header{
@@ -70,7 +70,7 @@
   .members-list{
     border-left: 0px solid #cbcbcb;
     padding: 12px;
-    width: 10%;
+    width: 15%;
     align-items: center;
   }
 

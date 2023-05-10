@@ -12,6 +12,7 @@ export default function Chat({ sb, userId }) {
     const [channelHeaderName, setChannelHeaderName] = useState('Channel Name');
     const [messageList, setMessageList] = useState([]);
     const [channelList, setChannelList] = useState(['hi']);
+    const [mutedMembers, setMutedMembers] = useState([]);
     const rendorMessageList = messageList.map((msg) =>
         <li>{msg}</li>
     );
@@ -95,12 +96,24 @@ export default function Chat({ sb, userId }) {
         }
     }
 
+
+
+    async function mutedMembersList() {
+        const query = newGroupChannel.createMutedUserListQuery();
+        const mutedUsers = await query.next();
+        setMutedMembers(mutedUsers);
+    }
+
+
+
     async function muteUser(member) {
         await newGroupChannel.muteUser(member, 1000, 'yes');
+        mutedMembersList();
     }
 
     async function unmuteUser(member) {
         await newGroupChannel.unmuteUser(member);
+        mutedMembersList();
     }
 
     return (
@@ -133,6 +146,14 @@ export default function Chat({ sb, userId }) {
             <div>
                 <h1>Members</h1>
                 {membersList()}
+                <h1>Muted Members</h1>
+                <div className="members-list">
+                    {mutedMembers.map((member) => (
+                        <div className="member-item" key={member.userId}>
+                            {member.nickname}
+                        </div>
+                    ))}
+                </div>
             </div>
         </div>
     );
