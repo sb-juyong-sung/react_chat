@@ -7,7 +7,7 @@ import { BaseChannel, createMyGroupChannelListQuery } from '@sendbird/chat';
 
 
 
-export default function Chat({ sb }) {
+export default function Chat({ sb, userId }) {
     const [newGroupChannel, setGroupChannel] = useState(null);
     const [channelHeaderName, setChannelHeaderName] = useState('Channel Name');
     const [messageList, setMessageList] = useState([]);
@@ -20,7 +20,8 @@ export default function Chat({ sb }) {
     const createChannel = async (channelName) => {
         const GroupChannelCreateParams = {
             name: channelName,
-            invitedUserIds: ['secondjd']
+            invitedUserIds: ['secondjd'],
+            operatorUserIds: [userId]
         };
         const newChannel = await sb.groupChannel.createChannel(GroupChannelCreateParams);
         setGroupChannel(newChannel);
@@ -35,7 +36,6 @@ export default function Chat({ sb }) {
         sb.groupChannel.addGroupChannelHandler('abcd', channelHandler);
         retrieveChannelList();
         setMessageList([]);
-        console.log(newGroupChannel.members);
     }
 
     function clickEnter(e) {
@@ -85,6 +85,8 @@ export default function Chat({ sb }) {
                 {newGroupChannel.members.map((member) =>
                     <div className="member-item" key={member.userId}>
                         {member.nickname}
+                        <button onClick={() => muteUser(member)}>mute</button>
+                        <button onClick={() => unmuteUser(member)}>unmute</button>
                     </div>
                 )}
             </div>;
@@ -93,12 +95,12 @@ export default function Chat({ sb }) {
         }
     }
 
-    function muteUser() {
-
+    async function muteUser(member) {
+        await newGroupChannel.muteUser(member, 1000, 'yes');
     }
 
-    function unmuteUser() {
-
+    async function unmuteUser(member) {
+        await newGroupChannel.unmuteUser(member);
     }
 
     return (
