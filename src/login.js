@@ -34,11 +34,14 @@ export default function Login({ sb, userId, setUserId, isLogined, setIsLogined }
 
     return (
         <>
-            <img src="/Sendbird_Symbol_RGB.png"
-                width={300}
-                height={300}
-                alt='Sendbird Symbol'></img>
-
+            <div className='align'>
+                <img src="/Sendbird_Symbol_RGB.png"
+                    width={300}
+                    height={300}
+                    alt='Sendbird Symbol'
+                    
+                ></img>
+            </div>
             <div className="logo">
                 Sendbird
             </div>
