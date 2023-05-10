@@ -2,7 +2,7 @@ import './chat_page.css';
 import React, { useState, useEffect } from 'react';
 import { GroupChannelModule, GroupChannelCreateParams, GroupChannelHandler, GroupChannelCollection, GroupChannelListOrder } from '@sendbird/chat/groupChannel';
 import { UserMessageCreateParams } from '@sendbird/chat/message';
-import { BaseChannel } from '@sendbird/chat';
+import { BaseChannel, createMyGroupChannelListQuery } from '@sendbird/chat';
 
 
 
@@ -17,10 +17,10 @@ export default function Chat({ sb }) {
     );
 
 
-
     const createChannel = async (channelName) => {
         const GroupChannelCreateParams = {
-            name: channelName
+            name: channelName,
+            invitedUserIds: ['secondjd']
         };
         const newChannel = await sb.groupChannel.createChannel(GroupChannelCreateParams);
         setGroupChannel(newChannel);
@@ -62,25 +62,30 @@ export default function Chat({ sb }) {
 
     async function retrieveChannelList() {
         const groupChannelCollection = sb.groupChannel.createGroupChannelCollection();
-        const channels = [];
+
         if (groupChannelCollection.hasMore) {
             const channelsLoad = await groupChannelCollection.loadMore();
-            channels.push(...channelsLoad);
+            setChannelList((currentChannelList) => [...currentChannelList, ...channelsLoad]);
         }
-        const channelItems = channels.map((channel) => (
-            <li key={channel.url}>{channel.url}</li>
-        ));
-        // setChannelList(channels);
-        console.log(channels);
 
+        const channelRetreiveHandler = {
+            onchannelsAdded: (context, channels) => {
+                console.log(channels)
+            }
+        };
+
+        groupChannelCollection.setGroupChannelCollectionHandler(channelRetreiveHandler);
     }
+
 
     return (
         <div>
             <div className="align-left">
                 <h1>"Channel List"</h1>
                 <ul>
-                    {channelList}
+                    {channelList.map((channel) => (
+                        <li key={channel.url}>{channel.name}</li>
+                    ))}
                 </ul>
                 <hr></hr>
             </div>
