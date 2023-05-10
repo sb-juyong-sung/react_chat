@@ -34,6 +34,7 @@ export default function Chat({ sb }) {
 
         sb.groupChannel.addGroupChannelHandler('abcd', channelHandler);
         retrieveChannelList();
+        setMessageList([]);
     }
 
     function clickEnter(e) {
