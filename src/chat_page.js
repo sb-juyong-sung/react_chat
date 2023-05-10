@@ -35,6 +35,7 @@ export default function Chat({ sb }) {
         sb.groupChannel.addGroupChannelHandler('abcd', channelHandler);
         retrieveChannelList();
         setMessageList([]);
+        console.log(newGroupChannel.members);
     }
 
     function clickEnter(e) {
@@ -78,9 +79,30 @@ export default function Chat({ sb }) {
         groupChannelCollection.setGroupChannelCollectionHandler(channelRetreiveHandler);
     }
 
+    function membersList() {
+        if (newGroupChannel) {
+            return <div className="members-list">
+                {newGroupChannel.members.map((member) =>
+                    <div className="member-item" key={member.userId}>
+                        {member.nickname}
+                    </div>
+                )}
+            </div>;
+        } else {
+            return null;
+        }
+    }
+
+    function muteUser() {
+
+    }
+
+    function unmuteUser() {
+
+    }
 
     return (
-        <div>
+        <div className='container'>
             <div className="channel-list">
                 <div className="channel-type">
                     <h1>Channel List</h1>
@@ -100,15 +122,15 @@ export default function Chat({ sb }) {
                     <ul>{rendorMessageList}</ul>
                     <div className="message-input">
                         <input id='textMessage' type="text" onKeyPress={clickEnter}></input>
-                        <button className="send-message-button" onClick={() => sendMessage(document.getElementById('textMessage').value)}>send</button>
+                        <div>
+                            <button className="send-message-button" onClick={() => sendMessage(document.getElementById('textMessage').value)}>send</button>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div className="members-list">
-                {newGroupChannel.members.map((member) =>
-                    <div className="member-item" key={member.userId}>{member.nickname}</div>
-                )
-                }
+            <div>
+                <h1>Members</h1>
+                {membersList()}
             </div>
         </div>
     );
