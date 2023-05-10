@@ -81,26 +81,26 @@ export default function Chat({ sb }) {
 
     return (
         <div>
-            <div className="align-left">
-                <h1>"Channel List"</h1>
+            <div className="channel-list">
+                <div className="channel-type">
+                    <h1>Channel List</h1>
+                    <input id='channelName' type="text"></input>
+                    <button onClick={() => createChannel(document.getElementById('channelName').value)}>create</button>
+                </div>
                 <ul>
                     {channelList.map((channel) => (
                         <li key={channel.url}>{channel.name}</li>
                     ))}
                 </ul>
-                <hr></hr>
             </div>
-            <div className="align-left">
+            <div className="channel">
                 <h1>{channelHeaderName}</h1>
-                <hr></hr>
+            
                 <ul>{rendorMessageList}</ul>
-                <hr></hr>
-                message : <input id='textMessage' type="text" onKeyPress={clickEnter}></input>
-                <button onClick={() => sendMessage(document.getElementById('textMessage').value)}>send</button>
-            </div>
-            <div className="align-left">
-                channelName : <input id='channelName' type="text"></input>
-                <button onClick={() => createChannel(document.getElementById('channelName').value)}>create</button>
+                <div className="message-input">
+                    <input id='textMessage' type="text" onKeyPress={clickEnter}></input>
+                    <button className="send-message-button" onClick={() => sendMessage(document.getElementById('textMessage').value)}>send</button>
+                </div>                
             </div>
         </div>
     );

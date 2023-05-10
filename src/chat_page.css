@@ -16,6 +16,7 @@
     flex: 1;
     border-right: 1px solid #cbcbcb;
     overflow-y: scroll;
+    align-items: center;
 }
 
 .channel-type {
@@ -31,4 +32,23 @@
     flex-direction: column;
     overflow-y: scroll;
     margin-bottom: 102px;
+    align-items: center;
+  }
+
+  .message-input{
+    position: fixed;
+    bottom: 0px;
+    display: flex;
+    border-top: 1px solid #cbcbcb;
+    width: 100%;
+    padding: 12px;
+    background: white;
+    align-items: center;
+  }
+
+
+  .send-message-button{
+    border-radius: 0px 4px 4px 0px;
+    margin-right:8px;
+    align-items: center;
   }
