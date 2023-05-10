@@ -94,13 +94,21 @@ export default function Chat({ sb }) {
                 </ul>
             </div>
             <div className="channel">
-                <h1>{channelHeaderName}</h1>
-            
-                <ul>{rendorMessageList}</ul>
-                <div className="message-input">
-                    <input id='textMessage' type="text" onKeyPress={clickEnter}></input>
-                    <button className="send-message-button" onClick={() => sendMessage(document.getElementById('textMessage').value)}>send</button>
-                </div>                
+                <div className="channel-header">{channelHeaderName}</div>
+                <hr className='hr-solid'></hr>
+                <div>
+                    <ul>{rendorMessageList}</ul>
+                    <div className="message-input">
+                        <input id='textMessage' type="text" onKeyPress={clickEnter}></input>
+                        <button className="send-message-button" onClick={() => sendMessage(document.getElementById('textMessage').value)}>send</button>
+                    </div>
+                </div>
+            </div>
+            <div className="members-list">
+                {newGroupChannel.members.map((member) =>
+                    <div className="member-item" key={member.userId}>{member.nickname}</div>
+                )
+                }
             </div>
         </div>
     );

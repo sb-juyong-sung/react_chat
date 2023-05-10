@@ -35,6 +35,12 @@
     align-items: center;
   }
 
+  .channel-header{
+    padding: 12px;
+    font-size: 36px;
+    font-weight: 800;
+  }
+
   .message-input{
     position: fixed;
     bottom: 0px;
@@ -47,8 +53,32 @@
   }
 
 
+
   .send-message-button{
     border-radius: 0px 4px 4px 0px;
     margin-right:8px;
     align-items: center;
+  }
+
+
+  .members-list{
+    border-left: 1px solid #cbcbcb;
+    padding: 12px;
+  }
+
+  .member-item{
+    padding: 8px 0px 0px 0px;
+    cursor: pointer;
+    font-weight: 600;
+    border-bottom: 1px solid #cfcfcf;
+    padding-bottom: 4px;
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .hr-solid {
+    width : 100px;
+    border : 0px;
+    border-top: 5px solid #663399;
   }
