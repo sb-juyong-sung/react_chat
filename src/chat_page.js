@@ -18,7 +18,7 @@ export default function Chat({ sb, userId }) {
         return (
             <div className='message-itme'>
                 <div className='message'>
-                    {msg}
+                    <div>{msg}</div>
                 </div>
             </div>
         )
@@ -145,7 +145,9 @@ export default function Chat({ sb, userId }) {
             <div className="channel">
                 <div className="channel-header">{channelHeaderName}</div>
                 <div>
-                    <ul>{rendorMessageList}</ul>
+                    <div className='message-list'>
+                        <ul>{rendorMessageList}</ul>
+                    </div>
                     <div className="message-input">
                         <input id='textMessage' type="text" onKeyPress={clickEnter}></input>
                         <div>
