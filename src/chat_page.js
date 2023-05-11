@@ -56,8 +56,8 @@ export default function Chat({ sb, userId }) {
     function sendMessage(textMessage) {
         const UserMessageCreateParams = {};
         UserMessageCreateParams.message = textMessage;
-
-        newGroupChannel.sendUserMessage(UserMessageCreateParams)
+        if (newGroupChannel) {
+            newGroupChannel.sendUserMessage(UserMessageCreateParams)
             .onPending((message) => {
 
             })
@@ -68,7 +68,11 @@ export default function Chat({ sb, userId }) {
 
             });
 
-        setMessageList([...messageList, textMessage]);
+            setMessageList([...messageList, textMessage]);
+        } else {
+            return null;
+        }
+        
     }
 
     async function retrieveChannelList() {
