@@ -81,6 +81,13 @@ input{
     background: white;
   }
 
+  .message-item{
+    margin: 12px;
+    display:flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+  }
+
   .channel-input{
     position: fixed;
     bottom: 0px;

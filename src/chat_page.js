@@ -16,7 +16,7 @@ export default function Chat({ sb, userId }) {
     const rendorMessageList = messageList.map((msg) =>{
         // <li>{msg}</li>
         return (
-            <div className='message-itme'>
+            <div className='message-item'>
                 <div className='message'>
                     <div>{msg}</div>
                 </div>
@@ -150,7 +150,7 @@ export default function Chat({ sb, userId }) {
                 <div className="channel-header">{channelHeaderName}</div>
                 <div>
                     <div className='message-list'>
-                        <ul>{rendorMessageList}</ul>
+                        <div>{rendorMessageList}</div>
                     </div>
                     <div className="message-input">
                         <input id='textMessage' type="text" onKeyPress={clickEnter}></input>
