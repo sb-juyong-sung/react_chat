@@ -28,6 +28,7 @@ export default function Chat({ sb, userId }) {
     groupChannelFilter.includeEmpty = true;
     const groupChannelCollection = sb.groupChannel.createGroupChannelCollection();
     groupChannelCollection.filter = groupChannelFilter;
+    groupChannelCollection.order = GroupChannelListOrder.CHRONOLOGICAL;
     const channelRetreiveHandler = {
         onchannelsAdded: (context, channels) => {
             console.log(channels)
