@@ -1,7 +1,7 @@
 import './App.css';
 import { useState } from 'react';
-import Chat from './chat_page';
-import Login from './login';
+import Chat from './Chat_page/chat_page';
+import Login from './Login/login';
 import SendbirdChat from '@sendbird/chat';
 import { GroupChannelModule } from '@sendbird/chat/groupChannel';
 
