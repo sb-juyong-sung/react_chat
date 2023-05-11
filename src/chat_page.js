@@ -141,7 +141,7 @@ export default function Chat({ sb, userId }) {
                         </div>
                     ))}
                 </div>
-                <div className="message-input">
+                <div className="channel-input">
                     <input id='channelName' type="text"></input>
                     <button onClick={() => createChannel(document.getElementById('channelName').value)}>create</button>
                 </div>
