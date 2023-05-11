@@ -81,7 +81,15 @@ input{
     background: white;
   }
 
-
+  .channel-input{
+    position: fixed;
+    bottom: 0px;
+    display: flex;
+    border-top: 1px solid #cbcbcb;
+    width: 100%;
+    padding: 12px;
+    background: white;
+  }
 
   .send-message-button{
     border-radius: 0px 4px 4px 0px;

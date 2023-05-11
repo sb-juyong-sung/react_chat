@@ -130,13 +130,13 @@ export default function Chat({ sb, userId }) {
                 <div className="channel-type">
                     <h1>Channel List</h1>
                 </div>
-                <ul>
+                <div>
                     {channelList.map((channel) => (
                         <div className='channel-list-item'>
                             <div className='channel-list-item-name' key={channel.url}>{channel.name}</div>
                         </div>
                     ))}
-                </ul>
+                </div>
                 <div className="message-input">
                     <input id='channelName' type="text"></input>
                     <button onClick={() => createChannel(document.getElementById('channelName').value)}>create</button>
