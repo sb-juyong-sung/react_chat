@@ -166,3 +166,9 @@ input{
     flex:1;
   }
 
+  .members{
+    display: grid;
+    place-items: center;
+    /* justify-content: center;
+    align-items: center; */
+  }

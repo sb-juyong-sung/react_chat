@@ -13,7 +13,7 @@ export default function Chat({ sb, userId }) {
     const [messageList, setMessageList] = useState([]);
     const [channelList, setChannelList] = useState(['hi']);
     const [mutedMembers, setMutedMembers] = useState([]);
-    const rendorMessageList = messageList.map((msg) =>{
+    const rendorMessageList = messageList.map((msg) => {
         // <li>{msg}</li>
         return (
             <div className='message-item'>
@@ -22,7 +22,7 @@ export default function Chat({ sb, userId }) {
                 </div>
             </div>
         )
-    }        
+    }
     );
 
 
@@ -58,21 +58,21 @@ export default function Chat({ sb, userId }) {
         UserMessageCreateParams.message = textMessage;
         if (newGroupChannel) {
             newGroupChannel.sendUserMessage(UserMessageCreateParams)
-            .onPending((message) => {
+                .onPending((message) => {
 
-            })
-            .onFailed((error) => {
-                console.log("error")
-            })
-            .onSucceeded((message) => {
+                })
+                .onFailed((error) => {
+                    console.log("error")
+                })
+                .onSucceeded((message) => {
 
-            });
+                });
 
             setMessageList([...messageList, textMessage]);
         } else {
             return null;
         }
-        
+
     }
 
     async function retrieveChannelList() {
@@ -162,15 +162,20 @@ export default function Chat({ sb, userId }) {
                 </div>
             </div>
             <div>
-                <h1>Members</h1>
-                {membersList()}
-                <h1>Muted Members</h1>
-                <div className="members-list">
-                    {mutedMembers.map((member) => (
-                        <div className="member-item" key={member.userId}>
-                            {member.nickname}
-                        </div>
-                    ))}
+                <div className='members'>
+                    <h1>Members</h1>
+                    {membersList()}
+                </div>
+                
+                <div className='members'>
+                    <h1>Muted Members</h1>
+                    <div className="members-list">
+                        {mutedMembers.map((member) => (
+                            <div className="member-item" key={member.userId}>
+                                {member.nickname}
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </div>
         </div>
