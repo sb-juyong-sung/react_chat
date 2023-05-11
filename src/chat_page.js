@@ -148,6 +148,7 @@ export default function Chat({ sb, userId }) {
             </div>
             <div className="channel">
                 <div className="channel-header">{channelHeaderName}</div>
+                <hr width='98%'></hr>
                 <div>
                     <div className='message-list'>
                         <div>{rendorMessageList}</div>
