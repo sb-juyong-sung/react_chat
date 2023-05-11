@@ -18,8 +18,8 @@
 
 .channel-list {
     background: white;
-    /* flex: 1; */
-    width: 20%;
+    flex: 1;
+    /* width: 20%; */
     border-right: 1px solid #cbcbcb;
     overflow-y: scroll;
     margin: 10px;
@@ -34,12 +34,12 @@
 
 .channel{
     background: white;
-    /* flex: 3; */
+    flex: 3;
     display: flex;
     flex-direction: column;
     overflow-y: scroll;
     margin-bottom: 102px;
-    width: 65%;
+    /* width: 65%; */
   }
 
   .channel-header{
@@ -70,7 +70,7 @@
   .members-list{
     border-left: 0px solid #cbcbcb;
     padding: 12px;
-    width: 15%;
+    /* width: 15%; */
     align-items: center;
   }
 
@@ -89,4 +89,40 @@
     width : 100px;
     border : 0px;
     border-top: 5px solid #663399;
+  }
+
+  .message-list{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  
+  }
+
+  .message{
+    border-radius: 8px;
+    width:70%;
+    background: #8a2be2;
+    color:white;
+    padding: 24px;
+    margin-left: 12px;
+  }
+
+  .channel-list-item{
+    background: #fcfcfc;
+    padding:12px;
+    border-top: 1px solid #ececec;
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 42px;
+  }
+
+  .channel-list-item-name{
+    font-weight: 600;
+    cursor: pointer;
+    overflow: hidden;
+    max-width: 75ch;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex:1;
   }

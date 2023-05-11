@@ -13,8 +13,16 @@ export default function Chat({ sb, userId }) {
     const [messageList, setMessageList] = useState([]);
     const [channelList, setChannelList] = useState(['hi']);
     const [mutedMembers, setMutedMembers] = useState([]);
-    const rendorMessageList = messageList.map((msg) =>
-        <li>{msg}</li>
+    const rendorMessageList = messageList.map((msg) =>{
+        // <li>{msg}</li>
+        return (
+            <div className='message-itme'>
+                <div className='message'>
+                    {msg}
+                </div>
+            </div>
+        )
+    }        
     );
 
 
@@ -121,18 +129,21 @@ export default function Chat({ sb, userId }) {
             <div className="channel-list">
                 <div className="channel-type">
                     <h1>Channel List</h1>
-                    <input id='channelName' type="text"></input>
-                    <button onClick={() => createChannel(document.getElementById('channelName').value)}>create</button>
                 </div>
                 <ul>
                     {channelList.map((channel) => (
-                        <li key={channel.url}>{channel.name}</li>
+                        <div className='channel-list-item'>
+                            <div className='channel-list-item-name' key={channel.url}>{channel.name}</div>
+                        </div>
                     ))}
                 </ul>
+                <div className="message-input">
+                    <input id='channelName' type="text"></input>
+                    <button onClick={() => createChannel(document.getElementById('channelName').value)}>create</button>
+                </div>
             </div>
             <div className="channel">
                 <div className="channel-header">{channelHeaderName}</div>
-                <hr className='hr-solid'></hr>
                 <div>
                     <ul>{rendorMessageList}</ul>
                     <div className="message-input">
