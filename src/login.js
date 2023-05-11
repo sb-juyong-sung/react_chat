@@ -11,7 +11,7 @@ export default function Login({ sb, userId, setUserId, isLogined, setIsLogined }
         const id_value = document.getElementById('id').value;
         const ni_value = document.getElementById('nickname').value;
         setUserId(id_value);
-        connectServer(id_value);
+        connectServer(id_value, ni_value);
         setIsLogined(true);
     }
 
