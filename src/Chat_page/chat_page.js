@@ -14,11 +14,11 @@ export default function Chat({ sb, userId }) {
     const [channelList, setChannelList] = useState([]);
     const [mutedMembers, setMutedMembers] = useState([]);
     const rendorMessageList = messageList.map((msg) => {
-        const messageSentbyMe = msg.sender.nickname === userId;
-        // <li>{msg}</li>
+        console.log(msg.sender.nickname, sb.currentUser.userId);
+        const messageSentbyMe = msg.sender.userId === sb.currentUser.userId;
         return (
-            <div className='message-item'>
-                <div className='message'>
+            <div className={`message-item ${messageSentbyMe ? 'message-from-you' : ''}`}>
+                <div className={`message  ${messageSentbyMe ? 'message-from-you' : ''}`}>
                     <div className='message-info'>
                         <div className="message-sender-name">{msg.sender.nickname}</div>
                         <div>{msg.createAt}</div>
@@ -71,7 +71,7 @@ export default function Chat({ sb, userId }) {
     function sendMessage(textMessage) {
         const UserMessageCreateParams = {};
         UserMessageCreateParams.message = textMessage;
-        UserMessageCreateParams.sender = {nickname:userId};
+        UserMessageCreateParams.sender = {nickname:sb.currentUser.nickname, userId:sb.currentUser.userId};
         if (newGroupChannel) {
             newGroupChannel.sendUserMessage(UserMessageCreateParams)
                 .onPending((message) => {
