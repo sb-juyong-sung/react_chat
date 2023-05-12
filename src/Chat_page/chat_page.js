@@ -140,13 +140,17 @@ export default function Chat({ sb, userId }) {
     }
 
     async function loadChannel(channel) {
-        console.log(channel);
         const PreviousMessageListQueryParams = {}
         const PreviousMessageListQuery = channel.createPreviousMessageListQuery(PreviousMessageListQueryParams);
         const messages = await PreviousMessageListQuery.load();
         setMessageList(messages)
         setGroupChannel(channel);
         setChannelHeaderName(channel.name);
+    }
+
+    async function deleteChannel(channel){
+        await channel.delete();
+        await retrieveChannelList();
     }
 
     return (
@@ -157,9 +161,13 @@ export default function Chat({ sb, userId }) {
                 </div>
                 <div>
                     {channelList.map((channel) => (
-                        <div className='channel-list-item'>
+                        <div key={channel.url} className='channel-list-item'>
                             <div className='channel-list-item-name' 
-                            onClick={() => {loadChannel(channel)}} key={channel.url}>{channel.name}</div>
+                                onClick={() => {loadChannel(channel)}} key={channel.url}>{channel.name}
+                            </div>
+                            <div>
+                                <button className='control-button' onClick={() => deleteChannel(channel)}>del</button>
+                            </div>
                         </div>
                     ))}
                 </div>

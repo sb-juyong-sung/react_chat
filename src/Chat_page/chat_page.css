@@ -166,6 +166,14 @@ input{
     min-height: 42px;
   }
 
+  .channel-list-item:hover{
+    background:#f0f0f0;
+  }
+  
+  .channel-list-item:hover .channel-icon{
+    visibility: visible;
+  }
+
   .channel-list-item-name{
     font-weight: 600;
     cursor: pointer;
@@ -175,6 +183,8 @@ input{
     white-space: nowrap;
     flex:1;
   }
+  
+
 
   .members{
     display: grid;
@@ -240,4 +250,11 @@ input{
     flex-direction: column;
     padding: 5px;
     box-sizing: border-box;
+  }
+
+  .control-button {
+    /* background: inherit; */
+    padding:4px;
+    margin-right:1px;
+    /* color: #39a9ff; */
   }
