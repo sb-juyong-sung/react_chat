@@ -92,7 +92,6 @@ export default function Chat({ sb, userId }) {
     }
 
     async function retrieveChannelList() {
-
         if (groupChannelCollection.hasMore) {
             const channelsLoad = await groupChannelCollection.loadMore();
             setChannelList((currentChannelList) => [...channelsLoad]);
@@ -140,6 +139,16 @@ export default function Chat({ sb, userId }) {
         mutedMembersList();
     }
 
+    async function loadChannel(channel) {
+        console.log(channel);
+        const PreviousMessageListQueryParams = {}
+        const PreviousMessageListQuery = channel.createPreviousMessageListQuery(PreviousMessageListQueryParams);
+        const messages = await PreviousMessageListQuery.load();
+        setMessageList(messages)
+        setGroupChannel(channel);
+        setChannelHeaderName(channel.name);
+    }
+
     return (
         <div className='container'>
             <div className="channel-list">
@@ -149,7 +158,8 @@ export default function Chat({ sb, userId }) {
                 <div>
                     {channelList.map((channel) => (
                         <div className='channel-list-item'>
-                            <div className='channel-list-item-name' key={channel.url}>{channel.name}</div>
+                            <div className='channel-list-item-name' 
+                            onClick={() => {loadChannel(channel)}} key={channel.url}>{channel.name}</div>
                         </div>
                     ))}
                 </div>
