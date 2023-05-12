@@ -182,3 +182,24 @@ input{
     /* justify-content: center;
     align-items: center; */
   }
+
+
+  .message-info{
+    margin-bottom:4px;
+    display: flex;
+    justify-content: space-between;
+    line-height: 24px;
+  }
+
+
+  .oc-message-sender-name{
+    color:#6210CC;
+    margin-left:4px;
+    font-weight: 600;
+    margin-right:4px;
+  }
+  
+  .message-sender-name{
+    font-weight: 600;
+    margin-right:4px;
+  }

@@ -14,11 +14,16 @@ export default function Chat({ sb, userId }) {
     const [channelList, setChannelList] = useState([]);
     const [mutedMembers, setMutedMembers] = useState([]);
     const rendorMessageList = messageList.map((msg) => {
+        const messageSentbyMe = msg.sender.nickname === userId;
         // <li>{msg}</li>
         return (
             <div className='message-item'>
                 <div className='message'>
-                    <div>{msg}</div>
+                    <div className='message-info'>
+                        <div className="message-sender-name">{msg.sender.nickname}</div>
+                        <div>{msg.createAt}</div>
+                    </div>
+                    <div>{msg.message}</div>
                 </div>
             </div>
         )
@@ -48,7 +53,7 @@ export default function Chat({ sb, userId }) {
 
         const channelHandler = new GroupChannelHandler({
             onMessageReceived: (newChannel, message) => {
-                setMessageList((currentMessageList) => [...currentMessageList, message.message]);
+                setMessageList((currentMessageList) => [...currentMessageList, message]);
             }
         });
 
@@ -66,6 +71,7 @@ export default function Chat({ sb, userId }) {
     function sendMessage(textMessage) {
         const UserMessageCreateParams = {};
         UserMessageCreateParams.message = textMessage;
+        UserMessageCreateParams.sender = {nickname:userId};
         if (newGroupChannel) {
             newGroupChannel.sendUserMessage(UserMessageCreateParams)
                 .onPending((message) => {
@@ -78,7 +84,7 @@ export default function Chat({ sb, userId }) {
 
                 });
 
-            setMessageList([...messageList, textMessage]);
+            setMessageList([...messageList, UserMessageCreateParams]);
         } else {
             return null;
         }
@@ -89,15 +95,13 @@ export default function Chat({ sb, userId }) {
 
         if (groupChannelCollection.hasMore) {
             const channelsLoad = await groupChannelCollection.loadMore();
-            console.log('here', channelsLoad);
             setChannelList((currentChannelList) => [...channelsLoad]);
         }
     }
 
     useEffect(() => {
         retrieveChannelList();
-      }, []);
-
+    }, []);
 
 
     function membersList() {
@@ -174,7 +178,7 @@ export default function Chat({ sb, userId }) {
                     <h1>Members</h1>
                     {membersList()}
                 </div>
-                
+
                 <div className='members'>
                     <h1>Muted Members</h1>
                     <div className="members-list">
