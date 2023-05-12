@@ -150,7 +150,7 @@ export default function Chat({ sb, userId }) {
 
     async function deleteChannel(channel){
         await channel.delete();
-        await retrieveChannelList();
+        setChannelList(channelList.filter(item => item.url !== channel.url));
     }
 
     return (
