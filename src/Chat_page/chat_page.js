@@ -155,6 +155,10 @@ export default function Chat({ sb, userId }) {
 
     async function leaveChannel(channel){
         await channel.leave();
+        setGroupChannel(null);
+        setMessageList([]);
+        setChannelHeaderName('Channel Name');
+        retrieveChannelList();
     }
 
     return (
