@@ -1,4 +1,4 @@
-import './login.css';
+import './Login.css';
 
 import { GroupChannelModule } from '@sendbird/chat/groupChannel';
 

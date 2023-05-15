@@ -1,4 +1,4 @@
-import './chat_page.css';
+import './ChatPage.css';
 import React, { useState, useEffect } from 'react';
 import { GroupChannelModule, GroupChannelCreateParams, GroupChannelHandler, GroupChannelCollection, GroupChannelListOrder, GroupChannelFilter } from '@sendbird/chat/groupChannel';
 import { UserMessageCreateParams } from '@sendbird/chat/message';
@@ -167,6 +167,7 @@ export default function Chat({ sb, userId }) {
     async function retrieveAllUsers() {
         const query = sb.createApplicationUserListQuery({limit: 20});
         const users = await query.next();
+
         return users.map((user) => console.log(user.nickname));
     }
 
