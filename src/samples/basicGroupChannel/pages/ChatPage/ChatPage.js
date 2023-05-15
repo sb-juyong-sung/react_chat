@@ -142,6 +142,8 @@ export default function Chat({ sb, userId }) {
         mutedMembersList();
     }
 
+
+    // channellist component로 옮겨감
     async function loadChannel(channel) {
         const PreviousMessageListQueryParams = {}
         const PreviousMessageListQuery = channel.createPreviousMessageListQuery(PreviousMessageListQueryParams);
@@ -151,6 +153,7 @@ export default function Chat({ sb, userId }) {
         setChannelHeaderName(channel.name);
     }
 
+    // channellist component로 옮겨감
     async function deleteChannel(channel){
         await channel.delete();
         setChannelList(channelList.filter(item => item.url !== channel.url));
@@ -174,6 +177,7 @@ export default function Chat({ sb, userId }) {
 
     return (
         <div className='container'>
+            {/* channel list */}
             <div className="channel-list">
                 <div className="channel-type">
                     <h1>Channel List</h1>
@@ -195,6 +199,7 @@ export default function Chat({ sb, userId }) {
                     <button onClick={() => createChannel(document.getElementById('channelName').value)}>create</button>
                 </div>
             </div>
+            {/* channel header + message list */}
             <div className="channel">
                 <div className="channel-header">{channelHeaderName}</div>
                 <div><button onClick={() => leaveChannel(newGroupChannel)}>Leave Channel</button></div>
@@ -211,6 +216,7 @@ export default function Chat({ sb, userId }) {
                     </div>
                 </div>
             </div>
+            {/* member list */}
             <div>
                 <div className='members'>
                     <h1>Members</h1>
