@@ -1,6 +1,8 @@
 import '../ChatPage.css';
 
-function ChannelList({channelList}) {
+import { GroupChannelHandler } from '@sendbird/chat/groupChannel';
+
+function ChannelList({channelList, setGroupChannel, setChannelHeaderName, setMessageList, setChannelList, retrieveChannelList}) {
 
     // 채널 생성
     const createChannel = async (channelName) => {
