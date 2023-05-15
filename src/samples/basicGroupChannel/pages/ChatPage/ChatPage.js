@@ -1,6 +1,6 @@
-import './chat_page.css';
+import './ChatPage.css';
 import React, { useState, useEffect } from 'react';
-import { GroupChannelModule, GroupChannelCreateParams, GroupChannelHandler, GroupChannelCollection, GroupChannelListOrder } from '@sendbird/chat/groupChannel';
+import { GroupChannelModule, GroupChannelCreateParams, GroupChannelHandler, GroupChannelCollection, GroupChannelListOrder, GroupChannelFilter } from '@sendbird/chat/groupChannel';
 import { UserMessageCreateParams } from '@sendbird/chat/message';
 import { BaseChannel, createMyGroupChannelListQuery } from '@sendbird/chat';
 
@@ -11,20 +11,35 @@ export default function Chat({ sb, userId }) {
     const [newGroupChannel, setGroupChannel] = useState(null);
     const [channelHeaderName, setChannelHeaderName] = useState('Channel Name');
     const [messageList, setMessageList] = useState([]);
-    const [channelList, setChannelList] = useState(['hi']);
+    const [channelList, setChannelList] = useState([]);
     const [mutedMembers, setMutedMembers] = useState([]);
+    const [userList, setUserList] = useState([]);
     const rendorMessageList = messageList.map((msg) => {
-        // <li>{msg}</li>
+        const messageSentbyMe = msg.sender.userId === sb.currentUser.userId;
         return (
-            <div className='message-item'>
-                <div className='message'>
-                    <div>{msg}</div>
+            <div className={`message-item ${messageSentbyMe ? 'message-from-you' : ''}`}>
+                <div className={`message  ${messageSentbyMe ? 'message-from-you' : ''}`}>
+                    <div className='message-info'>
+                        <div className="message-sender-name">{msg.sender.nickname}</div>
+                        <div>{msg.createAt}</div>
+                    </div>
+                    <div>{msg.message}</div>
                 </div>
             </div>
         )
     }
     );
-
+    const groupChannelFilter = new GroupChannelFilter();
+    groupChannelFilter.includeEmpty = true;
+    const groupChannelCollection = sb.groupChannel.createGroupChannelCollection();
+    groupChannelCollection.filter = groupChannelFilter;
+    groupChannelCollection.order = GroupChannelListOrder.CHRONOLOGICAL;
+    const channelRetreiveHandler = {
+        onchannelsAdded: (context, channels) => {
+            console.log(channels)
+        }
+    };
+    groupChannelCollection.setGroupChannelCollectionHandler(channelRetreiveHandler);
 
     const createChannel = async (channelName) => {
         const GroupChannelCreateParams = {
@@ -38,13 +53,16 @@ export default function Chat({ sb, userId }) {
 
         const channelHandler = new GroupChannelHandler({
             onMessageReceived: (newChannel, message) => {
-                setMessageList((currentMessageList) => [...currentMessageList, message.message]);
+                setMessageList((currentMessageList) => [...currentMessageList, message]);
             }
         });
 
         sb.groupChannel.addGroupChannelHandler('abcd', channelHandler);
         retrieveChannelList();
         setMessageList([]);
+
+        const userIds = ['qa', 'wef'];
+        await newChannel.inviteWithUserIds(userIds);
     }
 
     function clickEnter(e) {
@@ -56,6 +74,7 @@ export default function Chat({ sb, userId }) {
     function sendMessage(textMessage) {
         const UserMessageCreateParams = {};
         UserMessageCreateParams.message = textMessage;
+        UserMessageCreateParams.sender = {nickname:sb.currentUser.nickname, userId:sb.currentUser.userId};
         if (newGroupChannel) {
             newGroupChannel.sendUserMessage(UserMessageCreateParams)
                 .onPending((message) => {
@@ -68,7 +87,7 @@ export default function Chat({ sb, userId }) {
 
                 });
 
-            setMessageList([...messageList, textMessage]);
+            setMessageList([...messageList, UserMessageCreateParams]);
         } else {
             return null;
         }
@@ -76,21 +95,16 @@ export default function Chat({ sb, userId }) {
     }
 
     async function retrieveChannelList() {
-        const groupChannelCollection = sb.groupChannel.createGroupChannelCollection();
-
         if (groupChannelCollection.hasMore) {
             const channelsLoad = await groupChannelCollection.loadMore();
-            setChannelList((currentChannelList) => [...currentChannelList, ...channelsLoad]);
+            setChannelList((currentChannelList) => [...channelsLoad]);
         }
-
-        const channelRetreiveHandler = {
-            onchannelsAdded: (context, channels) => {
-                console.log(channels)
-            }
-        };
-
-        groupChannelCollection.setGroupChannelCollectionHandler(channelRetreiveHandler);
     }
+
+    useEffect(() => {
+        retrieveChannelList();
+    }, []);
+
 
     function membersList() {
         if (newGroupChannel) {
@@ -128,6 +142,36 @@ export default function Chat({ sb, userId }) {
         mutedMembersList();
     }
 
+    async function loadChannel(channel) {
+        const PreviousMessageListQueryParams = {}
+        const PreviousMessageListQuery = channel.createPreviousMessageListQuery(PreviousMessageListQueryParams);
+        const messages = await PreviousMessageListQuery.load();
+        setMessageList(messages)
+        setGroupChannel(channel);
+        setChannelHeaderName(channel.name);
+    }
+
+    async function deleteChannel(channel){
+        await channel.delete();
+        setChannelList(channelList.filter(item => item.url !== channel.url));
+    }
+
+    async function leaveChannel(channel){
+        await channel.leave();
+        setGroupChannel(null);
+        setMessageList([]);
+        setChannelHeaderName('Channel Name');
+        retrieveChannelList();
+    }
+
+    async function retrieveAllUsers() {
+        const query = sb.createApplicationUserListQuery({limit: 20});
+        const users = await query.next();
+
+        return users.map((user) => console.log(user.nickname));
+    }
+
+
     return (
         <div className='container'>
             <div className="channel-list">
@@ -136,8 +180,13 @@ export default function Chat({ sb, userId }) {
                 </div>
                 <div>
                     {channelList.map((channel) => (
-                        <div className='channel-list-item'>
-                            <div className='channel-list-item-name' key={channel.url}>{channel.name}</div>
+                        <div key={channel.url} className='channel-list-item'>
+                            <div className='channel-list-item-name' 
+                                onClick={() => {loadChannel(channel)}} key={channel.url}>{channel.name}
+                            </div>
+                            <div>
+                                <button className='control-button' onClick={() => deleteChannel(channel)}>del</button>
+                            </div>
                         </div>
                     ))}
                 </div>
@@ -148,6 +197,7 @@ export default function Chat({ sb, userId }) {
             </div>
             <div className="channel">
                 <div className="channel-header">{channelHeaderName}</div>
+                <div><button onClick={() => leaveChannel(newGroupChannel)}>Leave Channel</button></div>
                 <hr width='98%'></hr>
                 <div>
                     <div className='message-list'>
@@ -164,9 +214,9 @@ export default function Chat({ sb, userId }) {
             <div>
                 <div className='members'>
                     <h1>Members</h1>
+                    <button onClick={() => retrieveAllUsers()}>Invite</button>
                     {membersList()}
                 </div>
-                
                 <div className='members'>
                     <h1>Muted Members</h1>
                     <div className="members-list">
