@@ -13,8 +13,8 @@ export default function Chat({ sb, userId }) {
     const [messageList, setMessageList] = useState([]);
     const [channelList, setChannelList] = useState([]);
     const [mutedMembers, setMutedMembers] = useState([]);
+    const [userList, setUserList] = useState([]);
     const rendorMessageList = messageList.map((msg) => {
-        console.log(msg.sender.nickname, sb.currentUser.userId);
         const messageSentbyMe = msg.sender.userId === sb.currentUser.userId;
         return (
             <div className={`message-item ${messageSentbyMe ? 'message-from-you' : ''}`}>
@@ -60,6 +60,9 @@ export default function Chat({ sb, userId }) {
         sb.groupChannel.addGroupChannelHandler('abcd', channelHandler);
         retrieveChannelList();
         setMessageList([]);
+
+        const userIds = ['qa', 'wef'];
+        await newChannel.inviteWithUserIds(userIds);
     }
 
     function clickEnter(e) {
@@ -161,6 +164,13 @@ export default function Chat({ sb, userId }) {
         retrieveChannelList();
     }
 
+    async function retrieveAllUsers() {
+        const query = sb.createApplicationUserListQuery({limit: 20});
+        const users = await query.next();
+        return users.map((user) => console.log(user.nickname));
+    }
+
+
     return (
         <div className='container'>
             <div className="channel-list">
@@ -203,6 +213,7 @@ export default function Chat({ sb, userId }) {
             <div>
                 <div className='members'>
                     <h1>Members</h1>
+                    <button onClick={() => retrieveAllUsers()}>Invite</button>
                     {membersList()}
                 </div>
                 <div className='members'>
