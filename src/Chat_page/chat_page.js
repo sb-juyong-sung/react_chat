@@ -153,6 +153,10 @@ export default function Chat({ sb, userId }) {
         setChannelList(channelList.filter(item => item.url !== channel.url));
     }
 
+    async function leaveChannel(channel){
+        await channel.leave();
+    }
+
     return (
         <div className='container'>
             <div className="channel-list">
@@ -178,6 +182,7 @@ export default function Chat({ sb, userId }) {
             </div>
             <div className="channel">
                 <div className="channel-header">{channelHeaderName}</div>
+                <div><button onClick={() => leaveChannel(newGroupChannel)}>Leave Channel</button></div>
                 <hr width='98%'></hr>
                 <div>
                     <div className='message-list'>
@@ -196,7 +201,6 @@ export default function Chat({ sb, userId }) {
                     <h1>Members</h1>
                     {membersList()}
                 </div>
-
                 <div className='members'>
                     <h1>Muted Members</h1>
                     <div className="members-list">
