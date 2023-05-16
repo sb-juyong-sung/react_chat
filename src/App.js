@@ -6,6 +6,7 @@ import GroupChannelRetrieveAListOfBannedOrMutedUsers from './samples/groupChanne
 import GroupChannelBanUnbanUsers from './samples/groupChannelBanUnbanUsers/GroupChannelBanUnbanUsers';
 import GroupChannelOperatorsList from './samples/groupChannelOperatorsList/GroupChannelOperatorsList';
 import GroupChannelRegisterUnregisterOperator from './samples/groupChannelRegisterUnregisterOperator/GroupChannelRegisterUnregisterOperator';
+import GroupChannelTypingIndicator from './samples/groupChannelTypingIndicator/GroupChannelTypingIndicator';
 
 import SendbirdChat from '@sendbird/chat';
 import { GroupChannelModule } from '@sendbird/chat/groupChannel';
@@ -23,7 +24,7 @@ const App = () => {
   );
 
   return (
-    <GroupChannelRegisterUnregisterOperator sb={sb} />
+    <GroupChannelTypingIndicator sb={sb} />
   );
 }
 
