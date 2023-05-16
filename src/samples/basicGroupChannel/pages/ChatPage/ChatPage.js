@@ -1,5 +1,5 @@
 import './ChatPage.css';
-import ChannelList from '../../components/ChannelList';
+import { ChannelList, ChannelHeader, MessageList } from '../../components';
 
 import React, { useState, useEffect } from 'react';
 import { GroupChannelModule, GroupChannelCreateParams, GroupChannelHandler, GroupChannelCollection, GroupChannelListOrder, GroupChannelFilter } from '@sendbird/chat/groupChannel';
@@ -16,6 +16,8 @@ export default function Chat({ sb, userId }) {
     const [channelList, setChannelList] = useState([]);
     const [mutedMembers, setMutedMembers] = useState([]);
     const [userList, setUserList] = useState([]);
+
+    // messagelist
     const rendorMessageList = messageList.map((msg) => {
         const messageSentbyMe = msg.sender.userId === sb.currentUser.userId;
         return (
@@ -31,6 +33,8 @@ export default function Chat({ sb, userId }) {
         )
     }
     );
+
+
     const groupChannelFilter = new GroupChannelFilter();
     groupChannelFilter.includeEmpty = true;
     const groupChannelCollection = sb.groupChannel.createGroupChannelCollection();
@@ -52,7 +56,7 @@ export default function Chat({ sb, userId }) {
     function sendMessage(textMessage) {
         const UserMessageCreateParams = {};
         UserMessageCreateParams.message = textMessage;
-        UserMessageCreateParams.sender = {nickname:sb.currentUser.nickname, userId:sb.currentUser.userId};
+        UserMessageCreateParams.sender = { nickname: sb.currentUser.nickname, userId: sb.currentUser.userId };
         if (newGroupChannel) {
             newGroupChannel.sendUserMessage(UserMessageCreateParams)
                 .onPending((message) => {
@@ -100,15 +104,11 @@ export default function Chat({ sb, userId }) {
         }
     }
 
-
-
     async function mutedMembersList() {
         const query = newGroupChannel.createMutedUserListQuery();
         const mutedUsers = await query.next();
         setMutedMembers(mutedUsers);
     }
-
-
 
     async function muteUser(member) {
         await newGroupChannel.muteUser(member, 1000, 'yes');
@@ -120,17 +120,8 @@ export default function Chat({ sb, userId }) {
         mutedMembersList();
     }
 
-
-    async function leaveChannel(channel){
-        await channel.leave();
-        setGroupChannel(null);
-        setMessageList([]);
-        setChannelHeaderName('Channel Name');
-        retrieveChannelList();
-    }
-
     async function retrieveAllUsers() {
-        const query = sb.createApplicationUserListQuery({limit: 20});
+        const query = sb.createApplicationUserListQuery({ limit: 20 });
         const users = await query.next();
 
         return users.map((user) => console.log(user.nickname));
@@ -139,19 +130,31 @@ export default function Chat({ sb, userId }) {
 
     return (
         <div className='container'>
-            {/* channel list */}
-            <ChannelList sb={sb} userId={userId} channelList={channelList} setGroupChannel={setGroupChannel}
-                setChannelHeaderName={setChannelHeaderName} setMessageList={setMessageList}
-                setChannelList={setChannelList} retrieveChannelList={retrieveChannelList}/>
+            <ChannelList
+                sb={sb}
+                userId={userId}
+                channelList={channelList}
+                setGroupChannel={setGroupChannel}
+                setChannelHeaderName={setChannelHeaderName}
+                setMessageList={setMessageList}
+                setChannelList={setChannelList}
+                retrieveChannelList={retrieveChannelList}
+            />
             {/* channel header + message list */}
             <div className="channel">
-                <div className="channel-header">{channelHeaderName}</div>
-                <div><button onClick={() => leaveChannel(newGroupChannel)}>Leave Channel</button></div>
-                <hr width='98%'></hr>
+                <ChannelHeader
+                    newGroupChannel={newGroupChannel}
+                    channelHeaderName={channelHeaderName}
+                    setGroupChannel={setGroupChannel}
+                    setMessageList={setMessageList}
+                    setChannelHeaderName={setChannelHeaderName}
+                    retrieveChannelList={retrieveChannelList}
+                />
                 <div>
-                    <div className='message-list'>
-                        <div>{rendorMessageList}</div>
-                    </div>
+                    <MessageList 
+                        sb={sb}
+                        messageList={messageList}
+                    />
                     <div className="message-input">
                         <input id='textMessage' type="text" onKeyPress={clickEnter}></input>
                         <div>
