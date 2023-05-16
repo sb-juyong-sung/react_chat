@@ -1,10 +1,10 @@
 import '../pages/ChatPage/ChatPage.css';
 
-function ChannelHeader({newGroupChannel, channelHeaderName, setGroupChannel, setMessageList, setChannelHeaderName, retrieveChannelList}) {
+function ChannelHeader({newGroupChannel, channelHeaderName, setOpenChannel, setMessageList, setChannelHeaderName, retrieveChannelList}) {
 
     async function leaveChannel(channel) {
         await channel.leave();
-        setGroupChannel(null);
+        setOpenChannel(null);
         setMessageList([]);
         setChannelHeaderName('Channel Name');
         retrieveChannelList();

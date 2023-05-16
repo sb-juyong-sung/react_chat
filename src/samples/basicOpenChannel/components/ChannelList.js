@@ -12,6 +12,10 @@ function ChannelList({sb, userId, channelList, setOpenChannel, setChannelHeaderN
         const newChannel = await sb.openChannel.createChannel(OpenChannelCreateParams);
         
         setOpenChannel(newChannel);
+        setChannelHeaderName(channelName);
+
+        setMessageList([]);
+        
         await newChannel.enter();
 
     }

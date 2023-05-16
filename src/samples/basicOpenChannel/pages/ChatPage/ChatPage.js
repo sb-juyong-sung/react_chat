@@ -1,8 +1,9 @@
 import './ChatPage.css';
-import { ChannelList, ChannelHeader, MessageList, MessageInput, MemberList } from '../../components';
+import { ChannelList, ChannelHeader, MessageList, MessageInput } from '../../components';
 
 import React, { useState, useEffect } from 'react';
-import { GroupChannelModule, GroupChannelCreateParams, GroupChannelHandler, GroupChannelCollection, GroupChannelListOrder, GroupChannelFilter } from '@sendbird/chat/groupChannel';
+import { GroupChannelModule, GroupChannelCreateParams, GroupChannelHandler, GroupChannelCollection } from '@sendbird/chat/groupChannel';
+import { OpenChannelListOrder } from '@sendbird/chat/openChannel';
 import { UserMessageCreateParams } from '@sendbird/chat/message';
 import { BaseChannel, createMyGroupChannelListQuery } from '@sendbird/chat';
 
@@ -17,22 +18,20 @@ export default function Chat({ sb, userId }) {
     const [mutedMembers, setMutedMembers] = useState([]);
     const [userList, setUserList] = useState([]);
     
-    const groupChannelFilter = new GroupChannelFilter();
-    groupChannelFilter.includeEmpty = true;
-    const groupChannelCollection = sb.groupChannel.createGroupChannelCollection();
-    groupChannelCollection.filter = groupChannelFilter;
-    groupChannelCollection.order = GroupChannelListOrder.CHRONOLOGICAL;
-    const channelRetreiveHandler = {
-        onchannelsAdded: (context, channels) => {
-            console.log(channels)
-        }
-    };
-    groupChannelCollection.setGroupChannelCollectionHandler(channelRetreiveHandler);
+    // 채널 리스트
+    const openQuery = sb.openChannel.createOpenChannelListQuery();
+
+    // const channelRetreiveHandler = {
+    //     onchannelsAdded: (context, channels) => {
+    //         console.log(channels)
+    //     }
+    // };
+    // openChannelCollection.setOpenChannelCollectionHandler(channelRetreiveHandler);
 
 
     async function retrieveChannelList() {
-        if (groupChannelCollection.hasMore) {
-            const channelsLoad = await groupChannelCollection.loadMore();
+        if (openQuery.hasNext) {
+            const channelsLoad = await openQuery.next();
             setChannelList((currentChannelList) => [...channelsLoad]);
         }
     }
@@ -83,12 +82,6 @@ export default function Chat({ sb, userId }) {
                     />
                 </div>
             </div>
-            <MemberList 
-                newOpenChannel={newOpenChannel}
-                mutedMembers={mutedMembers}
-                setMutedMembers={setMutedMembers}
-                retrieveAllUsers={retrieveAllUsers}
-            />
         </div>
     );
 }
