@@ -1,5 +1,5 @@
 import './ChatPage.css';
-import { ChannelList, ChannelHeader, MessageList, MessageInput } from '../../components';
+import { ChannelList, ChannelHeader, MessageList, MessageInput, MemberList } from '../../components';
 
 import React, { useState, useEffect } from 'react';
 import { GroupChannelModule, GroupChannelCreateParams, GroupChannelHandler, GroupChannelCollection, GroupChannelListOrder, GroupChannelFilter } from '@sendbird/chat/groupChannel';
@@ -30,37 +30,6 @@ export default function Chat({ sb, userId }) {
     groupChannelCollection.setGroupChannelCollectionHandler(channelRetreiveHandler);
 
 
-    // messageinput
-    function clickEnter(e) {
-        if (e.key === 'Enter') {
-            sendMessage(document.getElementById('textMessage').value)
-        }
-    }
-
-    // messageinput
-    function sendMessage(textMessage) {
-        const UserMessageCreateParams = {};
-        UserMessageCreateParams.message = textMessage;
-        UserMessageCreateParams.sender = { nickname: sb.currentUser.nickname, userId: sb.currentUser.userId };
-        if (newGroupChannel) {
-            newGroupChannel.sendUserMessage(UserMessageCreateParams)
-                .onPending((message) => {
-
-                })
-                .onFailed((error) => {
-                    console.log("error")
-                })
-                .onSucceeded((message) => {
-
-                });
-
-            setMessageList([...messageList, UserMessageCreateParams]);
-        } else {
-            return null;
-        }
-
-    }
-
     async function retrieveChannelList() {
         if (groupChannelCollection.hasMore) {
             const channelsLoad = await groupChannelCollection.loadMore();
@@ -71,39 +40,6 @@ export default function Chat({ sb, userId }) {
     useEffect(() => {
         retrieveChannelList();
     }, []);
-
-
-    function membersList() {
-        if (newGroupChannel) {
-            return <div className="members-list">
-                {newGroupChannel.members.map((member) =>
-                    <div className="member-item" key={member.userId}>
-                        {member.nickname}
-                        <button onClick={() => muteUser(member)}>mute</button>
-                        <button onClick={() => unmuteUser(member)}>unmute</button>
-                    </div>
-                )}
-            </div>;
-        } else {
-            return null;
-        }
-    }
-
-    async function mutedMembersList() {
-        const query = newGroupChannel.createMutedUserListQuery();
-        const mutedUsers = await query.next();
-        setMutedMembers(mutedUsers);
-    }
-
-    async function muteUser(member) {
-        await newGroupChannel.muteUser(member, 1000, 'yes');
-        mutedMembersList();
-    }
-
-    async function unmuteUser(member) {
-        await newGroupChannel.unmuteUser(member);
-        mutedMembersList();
-    }
 
     async function retrieveAllUsers() {
         const query = sb.createApplicationUserListQuery({ limit: 20 });
@@ -125,7 +61,6 @@ export default function Chat({ sb, userId }) {
                 setChannelList={setChannelList}
                 retrieveChannelList={retrieveChannelList}
             />
-            {/* channel header + message list */}
             <div className="channel">
                 <ChannelHeader
                     newGroupChannel={newGroupChannel}
@@ -148,24 +83,12 @@ export default function Chat({ sb, userId }) {
                     />
                 </div>
             </div>
-            {/* member list */}
-            <div>
-                <div className='members'>
-                    <h1>Members</h1>
-                    <button onClick={() => retrieveAllUsers()}>Invite</button>
-                    {membersList()}
-                </div>
-                <div className='members'>
-                    <h1>Muted Members</h1>
-                    <div className="members-list">
-                        {mutedMembers.map((member) => (
-                            <div className="member-item" key={member.userId}>
-                                {member.nickname}
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
+            <MemberList 
+                newGroupChannel={newGroupChannel}
+                mutedMembers={mutedMembers}
+                setMutedMembers={setMutedMembers}
+                retrieveAllUsers={retrieveAllUsers}
+            />
         </div>
     );
 }
