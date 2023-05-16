@@ -16,7 +16,7 @@ export default function Chat({ sb, userId }) {
     const [channelList, setChannelList] = useState([]);
     const [mutedMembers, setMutedMembers] = useState([]);
     const [userList, setUserList] = useState([]);
-
+    
     const groupChannelFilter = new GroupChannelFilter();
     groupChannelFilter.includeEmpty = true;
     const groupChannelCollection = sb.groupChannel.createGroupChannelCollection();
