@@ -1,5 +1,5 @@
 import './ChatPage.css';
-import { ChannelList, ChannelHeader, MessageList } from '../../components';
+import { ChannelList, ChannelHeader, MessageList, MessageInput } from '../../components';
 
 import React, { useState, useEffect } from 'react';
 import { GroupChannelModule, GroupChannelCreateParams, GroupChannelHandler, GroupChannelCollection, GroupChannelListOrder, GroupChannelFilter } from '@sendbird/chat/groupChannel';
@@ -17,24 +17,6 @@ export default function Chat({ sb, userId }) {
     const [mutedMembers, setMutedMembers] = useState([]);
     const [userList, setUserList] = useState([]);
 
-    // messagelist
-    const rendorMessageList = messageList.map((msg) => {
-        const messageSentbyMe = msg.sender.userId === sb.currentUser.userId;
-        return (
-            <div className={`message-item ${messageSentbyMe ? 'message-from-you' : ''}`}>
-                <div className={`message  ${messageSentbyMe ? 'message-from-you' : ''}`}>
-                    <div className='message-info'>
-                        <div className="message-sender-name">{msg.sender.nickname}</div>
-                        <div>{msg.createAt}</div>
-                    </div>
-                    <div>{msg.message}</div>
-                </div>
-            </div>
-        )
-    }
-    );
-
-
     const groupChannelFilter = new GroupChannelFilter();
     groupChannelFilter.includeEmpty = true;
     const groupChannelCollection = sb.groupChannel.createGroupChannelCollection();
@@ -47,12 +29,15 @@ export default function Chat({ sb, userId }) {
     };
     groupChannelCollection.setGroupChannelCollectionHandler(channelRetreiveHandler);
 
+
+    // messageinput
     function clickEnter(e) {
         if (e.key === 'Enter') {
             sendMessage(document.getElementById('textMessage').value)
         }
     }
 
+    // messageinput
     function sendMessage(textMessage) {
         const UserMessageCreateParams = {};
         UserMessageCreateParams.message = textMessage;
@@ -155,12 +140,12 @@ export default function Chat({ sb, userId }) {
                         sb={sb}
                         messageList={messageList}
                     />
-                    <div className="message-input">
-                        <input id='textMessage' type="text" onKeyPress={clickEnter}></input>
-                        <div>
-                            <button className="send-message-button" onClick={() => sendMessage(document.getElementById('textMessage').value)}>send</button>
-                        </div>
-                    </div>
+                    <MessageInput 
+                        sb={sb}
+                        newGroupChannel={newGroupChannel}
+                        messageList={messageList}
+                        setMessageList={setMessageList}
+                    />
                 </div>
             </div>
             {/* member list */}
