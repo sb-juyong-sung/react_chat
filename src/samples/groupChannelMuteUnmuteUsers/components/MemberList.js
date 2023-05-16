@@ -41,16 +41,6 @@ function MemberList({ newGroupChannel, mutedMembers, setMutedMembers, retrieveAl
                 <button onClick={() => retrieveAllUsers()}>Invite</button>
                 {membersList()}
             </div>
-            <div className='members'>
-                <h1>Muted Members</h1>
-                <div className="members-list">
-                    {mutedMembers.map((member) => (
-                        <div className="member-item" key={member.userId}>
-                            {member.nickname}
-                        </div>
-                    ))}
-                </div>
-            </div>
         </div>
     );
 }
