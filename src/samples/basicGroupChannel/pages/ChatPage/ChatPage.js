@@ -1,4 +1,6 @@
 import './ChatPage.css';
+import { ChannelList, ChannelHeader, MessageList, MessageInput, MemberList } from '../../components';
+
 import React, { useState, useEffect } from 'react';
 import { GroupChannelModule, GroupChannelCreateParams, GroupChannelHandler, GroupChannelCollection, GroupChannelListOrder, GroupChannelFilter } from '@sendbird/chat/groupChannel';
 import { UserMessageCreateParams } from '@sendbird/chat/message';
@@ -14,21 +16,7 @@ export default function Chat({ sb, userId }) {
     const [channelList, setChannelList] = useState([]);
     const [mutedMembers, setMutedMembers] = useState([]);
     const [userList, setUserList] = useState([]);
-    const rendorMessageList = messageList.map((msg) => {
-        const messageSentbyMe = msg.sender.userId === sb.currentUser.userId;
-        return (
-            <div className={`message-item ${messageSentbyMe ? 'message-from-you' : ''}`}>
-                <div className={`message  ${messageSentbyMe ? 'message-from-you' : ''}`}>
-                    <div className='message-info'>
-                        <div className="message-sender-name">{msg.sender.nickname}</div>
-                        <div>{msg.createAt}</div>
-                    </div>
-                    <div>{msg.message}</div>
-                </div>
-            </div>
-        )
-    }
-    );
+
     const groupChannelFilter = new GroupChannelFilter();
     groupChannelFilter.includeEmpty = true;
     const groupChannelCollection = sb.groupChannel.createGroupChannelCollection();
@@ -41,58 +29,6 @@ export default function Chat({ sb, userId }) {
     };
     groupChannelCollection.setGroupChannelCollectionHandler(channelRetreiveHandler);
 
-    const createChannel = async (channelName) => {
-        const GroupChannelCreateParams = {
-            name: channelName,
-            invitedUserIds: ['secondjd'],
-            operatorUserIds: [userId]
-        };
-        const newChannel = await sb.groupChannel.createChannel(GroupChannelCreateParams);
-        setGroupChannel(newChannel);
-        setChannelHeaderName(channelName);
-
-        const channelHandler = new GroupChannelHandler({
-            onMessageReceived: (newChannel, message) => {
-                setMessageList((currentMessageList) => [...currentMessageList, message]);
-            }
-        });
-
-        sb.groupChannel.addGroupChannelHandler('abcd', channelHandler);
-        retrieveChannelList();
-        setMessageList([]);
-
-        const userIds = ['qa', 'wef'];
-        await newChannel.inviteWithUserIds(userIds);
-    }
-
-    function clickEnter(e) {
-        if (e.key === 'Enter') {
-            sendMessage(document.getElementById('textMessage').value)
-        }
-    }
-
-    function sendMessage(textMessage) {
-        const UserMessageCreateParams = {};
-        UserMessageCreateParams.message = textMessage;
-        UserMessageCreateParams.sender = {nickname:sb.currentUser.nickname, userId:sb.currentUser.userId};
-        if (newGroupChannel) {
-            newGroupChannel.sendUserMessage(UserMessageCreateParams)
-                .onPending((message) => {
-
-                })
-                .onFailed((error) => {
-                    console.log("error")
-                })
-                .onSucceeded((message) => {
-
-                });
-
-            setMessageList([...messageList, UserMessageCreateParams]);
-        } else {
-            return null;
-        }
-
-    }
 
     async function retrieveChannelList() {
         if (groupChannelCollection.hasMore) {
@@ -105,67 +41,8 @@ export default function Chat({ sb, userId }) {
         retrieveChannelList();
     }, []);
 
-
-    function membersList() {
-        if (newGroupChannel) {
-            return <div className="members-list">
-                {newGroupChannel.members.map((member) =>
-                    <div className="member-item" key={member.userId}>
-                        {member.nickname}
-                        <button onClick={() => muteUser(member)}>mute</button>
-                        <button onClick={() => unmuteUser(member)}>unmute</button>
-                    </div>
-                )}
-            </div>;
-        } else {
-            return null;
-        }
-    }
-
-
-
-    async function mutedMembersList() {
-        const query = newGroupChannel.createMutedUserListQuery();
-        const mutedUsers = await query.next();
-        setMutedMembers(mutedUsers);
-    }
-
-
-
-    async function muteUser(member) {
-        await newGroupChannel.muteUser(member, 1000, 'yes');
-        mutedMembersList();
-    }
-
-    async function unmuteUser(member) {
-        await newGroupChannel.unmuteUser(member);
-        mutedMembersList();
-    }
-
-    async function loadChannel(channel) {
-        const PreviousMessageListQueryParams = {}
-        const PreviousMessageListQuery = channel.createPreviousMessageListQuery(PreviousMessageListQueryParams);
-        const messages = await PreviousMessageListQuery.load();
-        setMessageList(messages)
-        setGroupChannel(channel);
-        setChannelHeaderName(channel.name);
-    }
-
-    async function deleteChannel(channel){
-        await channel.delete();
-        setChannelList(channelList.filter(item => item.url !== channel.url));
-    }
-
-    async function leaveChannel(channel){
-        await channel.leave();
-        setGroupChannel(null);
-        setMessageList([]);
-        setChannelHeaderName('Channel Name');
-        retrieveChannelList();
-    }
-
     async function retrieveAllUsers() {
-        const query = sb.createApplicationUserListQuery({limit: 20});
+        const query = sb.createApplicationUserListQuery({ limit: 20 });
         const users = await query.next();
 
         return users.map((user) => console.log(user.nickname));
@@ -174,60 +51,44 @@ export default function Chat({ sb, userId }) {
 
     return (
         <div className='container'>
-            <div className="channel-list">
-                <div className="channel-type">
-                    <h1>Channel List</h1>
-                </div>
-                <div>
-                    {channelList.map((channel) => (
-                        <div key={channel.url} className='channel-list-item'>
-                            <div className='channel-list-item-name' 
-                                onClick={() => {loadChannel(channel)}} key={channel.url}>{channel.name}
-                            </div>
-                            <div>
-                                <button className='control-button' onClick={() => deleteChannel(channel)}>del</button>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-                <div className="channel-input">
-                    <input id='channelName' type="text"></input>
-                    <button onClick={() => createChannel(document.getElementById('channelName').value)}>create</button>
-                </div>
-            </div>
+            <ChannelList
+                sb={sb}
+                userId={userId}
+                channelList={channelList}
+                setGroupChannel={setGroupChannel}
+                setChannelHeaderName={setChannelHeaderName}
+                setMessageList={setMessageList}
+                setChannelList={setChannelList}
+                retrieveChannelList={retrieveChannelList}
+            />
             <div className="channel">
-                <div className="channel-header">{channelHeaderName}</div>
-                <div><button onClick={() => leaveChannel(newGroupChannel)}>Leave Channel</button></div>
-                <hr width='98%'></hr>
+                <ChannelHeader
+                    newGroupChannel={newGroupChannel}
+                    channelHeaderName={channelHeaderName}
+                    setGroupChannel={setGroupChannel}
+                    setMessageList={setMessageList}
+                    setChannelHeaderName={setChannelHeaderName}
+                    retrieveChannelList={retrieveChannelList}
+                />
                 <div>
-                    <div className='message-list'>
-                        <div>{rendorMessageList}</div>
-                    </div>
-                    <div className="message-input">
-                        <input id='textMessage' type="text" onKeyPress={clickEnter}></input>
-                        <div>
-                            <button className="send-message-button" onClick={() => sendMessage(document.getElementById('textMessage').value)}>send</button>
-                        </div>
-                    </div>
+                    <MessageList 
+                        sb={sb}
+                        messageList={messageList}
+                    />
+                    <MessageInput 
+                        sb={sb}
+                        newGroupChannel={newGroupChannel}
+                        messageList={messageList}
+                        setMessageList={setMessageList}
+                    />
                 </div>
             </div>
-            <div>
-                <div className='members'>
-                    <h1>Members</h1>
-                    <button onClick={() => retrieveAllUsers()}>Invite</button>
-                    {membersList()}
-                </div>
-                <div className='members'>
-                    <h1>Muted Members</h1>
-                    <div className="members-list">
-                        {mutedMembers.map((member) => (
-                            <div className="member-item" key={member.userId}>
-                                {member.nickname}
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
+            <MemberList 
+                newGroupChannel={newGroupChannel}
+                mutedMembers={mutedMembers}
+                setMutedMembers={setMutedMembers}
+                retrieveAllUsers={retrieveAllUsers}
+            />
         </div>
     );
 }
