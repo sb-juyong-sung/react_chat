@@ -1,6 +1,6 @@
 import '../pages/ChatPage/ChatPage.css';
 
-import { GroupChannelHandler } from '@sendbird/chat/groupChannel';
+import { OpenChannelHandler } from '@sendbird/chat/openChannel';
 
 function ChannelList({sb, userId, channelList, setOpenChannel, setChannelHeaderName, setMessageList, setChannelList, retrieveChannelList}) {
 
@@ -10,13 +10,18 @@ function ChannelList({sb, userId, channelList, setOpenChannel, setChannelHeaderN
             name: channelName,
         };
         const newChannel = await sb.openChannel.createChannel(OpenChannelCreateParams);
-        
+        await newChannel.enter();
         setOpenChannel(newChannel);
         setChannelHeaderName(channelName);
 
+        const channelHandler = new OpenChannelHandler({
+            onMessageReceived: (newChannel, message) => {
+                setMessageList((currentMessageList) => [...currentMessageList, message]);
+            }
+        });
+        sb.openChannel.addOpenChannelHandler('messageHandler', channelHandler);
+        retrieveChannelList();
         setMessageList([]);
-        
-        await newChannel.enter();
 
     }
 
@@ -28,6 +33,13 @@ function ChannelList({sb, userId, channelList, setOpenChannel, setChannelHeaderN
 
     // 채널을 클릭하였을 시 채널에 입장하는 효과
     async function loadChannel(channel) {
+        await channel.enter();
+        const channelHandler = new OpenChannelHandler({
+            onMessageReceived: (newChannel, message) => {
+                setMessageList((currentMessageList) => [...currentMessageList, message]);
+            }
+        });
+        sb.openChannel.addOpenChannelHandler('messageHandler', channelHandler);
         const PreviousMessageListQueryParams = {}
         const PreviousMessageListQuery = channel.createPreviousMessageListQuery(PreviousMessageListQueryParams);
         const messages = await PreviousMessageListQuery.load();

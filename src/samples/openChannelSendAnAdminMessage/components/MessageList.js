@@ -1,11 +1,13 @@
-import { AdminMessage } from '@sendbird/chat/message';
 import '../pages/ChatPage/ChatPage.css';
 
 function MessageList({sb, messageList}) {
+
     const rendorMessageList = messageList.map((msg) => {
-        if (msg.messageType === 'admin') {
+
+        if (msg.messageType === "admin"){
             return <div>admin: {msg.message}</div>
-        } else{        const messageSentbyMe = msg.sender.userId === sb.currentUser.userId;
+        } else {
+        const messageSentbyMe = msg.sender.userId === sb.currentUser.userId;
         return (
             <div className={`message-item ${messageSentbyMe ? 'message-from-you' : ''}`}>
                 <div className={`message  ${messageSentbyMe ? 'message-from-you' : ''}`}>

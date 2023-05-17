@@ -31,7 +31,7 @@ const App = () => {
   );
 
   return (
-    <BasicOpenChannelSample sb={sb} />
+    <OpenChannelSendAnAdminMessage sb={sb} />
   );
 }
 
