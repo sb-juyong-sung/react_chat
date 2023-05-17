@@ -34,6 +34,11 @@ function ChannelList({sb, userId, channelList, setOpenChannel, setChannelHeaderN
     // 채널을 클릭하였을 시 채널에 입장하는 효과
     async function loadChannel(channel) {
         await channel.enter();
+        const channelHandler = new OpenChannelHandler({
+            onMessageReceived: (newChannel, message) => {
+                setMessageList((currentMessageList) => [...currentMessageList, message]);
+            }
+        });
         const PreviousMessageListQueryParams = {}
         const PreviousMessageListQuery = channel.createPreviousMessageListQuery(PreviousMessageListQueryParams);
         const messages = await PreviousMessageListQuery.load();
