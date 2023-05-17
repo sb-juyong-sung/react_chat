@@ -15,6 +15,7 @@ import GroupChannelRetrieveNumberOfMembersHaventReadMessage from './samples/grou
 
 import OpenChannelSendAnAdminMessage from './samples/openChannelSendAnAdminMessage/OpenChannelSendAnAdminMessage';
 import OpenChannelCopyMessage from './samples/openChannelCopyMessage/OpenChannelCopyMessage';
+import OpenChannelFreeze from './samples/openChannelFreeze/OpenChannelFreeze';
 
 import SendbirdChat from '@sendbird/chat';
 import { GroupChannelModule } from '@sendbird/chat/groupChannel';
@@ -32,7 +33,7 @@ const App = () => {
   );
 
   return (
-    <OpenChannelCopyMessage sb={sb} />
+    <OpenChannelFreeze sb={sb} />
   );
 }
 

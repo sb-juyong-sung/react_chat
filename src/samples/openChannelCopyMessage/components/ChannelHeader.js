@@ -1,6 +1,7 @@
 import '../pages/ChatPage/ChatPage.css';
+import { useState } from 'react';
 
-function ChannelHeader({newGroupChannel, channelHeaderName, setOpenChannel, setMessageList, setChannelHeaderName, retrieveChannelList}) {
+function ChannelHeader({ newGroupChannel, channelHeaderName, setOpenChannel, setMessageList, setChannelHeaderName, retrieveChannelList }) {
 
     async function leaveChannel(channel) {
         await channel.leave();
@@ -13,7 +14,9 @@ function ChannelHeader({newGroupChannel, channelHeaderName, setOpenChannel, setM
     return (
         <div>
             <div className="channel-header">{channelHeaderName}</div>
-            <div><button onClick={() => leaveChannel(newGroupChannel)}>Leave Channel</button></div>
+            <div>
+                <button onClick={() => leaveChannel(newGroupChannel)}>Leave Channel</button>
+            </div>
             <hr width='98%'></hr>
         </div>
     );
