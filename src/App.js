@@ -11,6 +11,7 @@ import GroupChannelSendAnAdminMessage from './samples/groupChannelSendAnAdminMes
 import GroupChannelFreezeUnfreeze from './samples/groupChannelFreezeUnfreeze/GroupChannelFreezeUnfreeze';
 import GroupChannelMarkMessagesAsRead from './samples/groupChannelMarkMessagesAsRead/GroupChannelMarkMessagesAsRead';
 import GroupChannelRetrieveOnlineStatus from './samples/groupChannelRetrieveOnlineStatus/GroupChannelRetrieveOnlineStatus';
+import GroupChannelRetrieveNumberOfMembersHaventReadMessage from './samples/groupChannelRetrieveNumberOfMembersHaventReadMessage/GroupChannelRetrieveNumberOfMembersHaventReadMessage';
 
 import SendbirdChat from '@sendbird/chat';
 import { GroupChannelModule } from '@sendbird/chat/groupChannel';
@@ -28,7 +29,7 @@ const App = () => {
   );
 
   return (
-    <GroupChannelRetrieveOnlineStatus sb={sb} />
+    <GroupChannelRetrieveNumberOfMembersHaventReadMessage sb={sb} />
   );
 }
 
