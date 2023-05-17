@@ -28,7 +28,7 @@ function ChannelList({sb, userId, channelList, newGroupChannel, setGroupChannel,
 
         const userIds = ['qa', 'wef'];
         await newChannel.inviteWithUserIds(userIds);
-
+        
         await newGroupChannel.markAsRead();
     }
 
