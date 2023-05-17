@@ -8,7 +8,7 @@ function ChannelList({sb, userId, channelList, setGroupChannel, setChannelHeader
     const createChannel = async (channelName) => {
         const GroupChannelCreateParams = {
             name: channelName,
-            invitedUserIds: ['firstjd', 'secondjd', 'thirdjd'],
+            invitedUserIds: ['secondjd'],
             operatorUserIds: [userId]
         };
         const newChannel = await sb.groupChannel.createChannel(GroupChannelCreateParams);

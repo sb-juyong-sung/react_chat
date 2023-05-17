@@ -1,15 +1,18 @@
 import '../pages/ChatPage/ChatPage.css';
+import {useState, useEffect} from 'react';
 
 function MemberList({ newGroupChannel, mutedMembers, setMutedMembers, retrieveAllUsers }) {
+
+    const [newMembersList, setNewMembersList] = useState([]);
+    const [showMembersList, setShowMembersList] = useState(true);
 
     function membersList() {
         if (newGroupChannel) {
             return <div className="members-list">
-                {newGroupChannel.members.map((member) =>
+                {newMembersList.map((member) =>
                     <div className="member-item" key={member.userId}>
                         {member.nickname}
-                        <button onClick={() => muteUser(member)}>mute</button>
-                        <button onClick={() => unmuteUser(member)}>unmute</button>
+                        <span>{member.connectionStatus}</span>
                     </div>
                 )}
             </div>;
@@ -18,20 +21,10 @@ function MemberList({ newGroupChannel, mutedMembers, setMutedMembers, retrieveAl
         }
     }
 
-    async function mutedMembersList() {
-        const query = newGroupChannel.createMutedUserListQuery();
-        const mutedUsers = await query.next();
-        setMutedMembers(mutedUsers);
-    }
-
-    async function muteUser(member) {
-        await newGroupChannel.muteUser(member, 1000, 'yes');
-        mutedMembersList();
-    }
-
-    async function unmuteUser(member) {
-        await newGroupChannel.unmuteUser(member);
-        mutedMembersList();
+    async function refreshChannel() {
+        await newGroupChannel.refresh();
+        setNewMembersList(newGroupChannel.members);
+        setShowMembersList(true);
     }
 
     return (
@@ -39,6 +32,9 @@ function MemberList({ newGroupChannel, mutedMembers, setMutedMembers, retrieveAl
             <div className='members'>
                 <h1>Members</h1>
                 <button onClick={() => retrieveAllUsers()}>Invite</button>
+                <div>
+                <button onClick={() => refreshChannel()}>Refresh</button>
+                </div>
                 {membersList()}
             </div>
         </div>

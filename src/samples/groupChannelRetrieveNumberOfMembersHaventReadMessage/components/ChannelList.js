@@ -2,7 +2,7 @@ import '../pages/ChatPage/ChatPage.css';
 
 import { GroupChannelHandler } from '@sendbird/chat/groupChannel';
 
-function ChannelList({sb, userId, channelList, setGroupChannel, setChannelHeaderName, setMessageList, setChannelList, retrieveChannelList}) {
+function ChannelList({sb, userId, channelList, newGroupChannel, setGroupChannel, setChannelHeaderName, setMessageList, setChannelList, retrieveChannelList}) {
 
     // 채널 생성
     const createChannel = async (channelName) => {
@@ -21,12 +21,15 @@ function ChannelList({sb, userId, channelList, setGroupChannel, setChannelHeader
             }
         });
 
+
         sb.groupChannel.addGroupChannelHandler('abcd', channelHandler);
         retrieveChannelList();
         setMessageList([]);
 
         const userIds = ['qa', 'wef'];
         await newChannel.inviteWithUserIds(userIds);
+        
+        await newGroupChannel.markAsRead();
     }
 
     // 채널 삭제
@@ -43,6 +46,7 @@ function ChannelList({sb, userId, channelList, setGroupChannel, setChannelHeader
         setMessageList(messages)
         setGroupChannel(channel);
         setChannelHeaderName(channel.name);
+        await newGroupChannel.markAsRead();
     }
 
     return (

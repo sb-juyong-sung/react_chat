@@ -2,31 +2,22 @@ import '../pages/ChatPage/ChatPage.css';
 
 import { GroupChannelHandler } from '@sendbird/chat/groupChannel';
 
-function ChannelList({sb, userId, channelList, setGroupChannel, setChannelHeaderName, setMessageList, setChannelList, retrieveChannelList}) {
+function ChannelList({sb, userId, channelList, setOpenChannel, setChannelHeaderName, setMessageList, setChannelList, retrieveChannelList}) {
 
     // 채널 생성
     const createChannel = async (channelName) => {
-        const GroupChannelCreateParams = {
+        const OpenChannelCreateParams = {
             name: channelName,
-            invitedUserIds: ['firstjd', 'secondjd', 'thirdjd'],
-            operatorUserIds: [userId]
         };
-        const newChannel = await sb.groupChannel.createChannel(GroupChannelCreateParams);
-        setGroupChannel(newChannel);
+        const newChannel = await sb.openChannel.createChannel(OpenChannelCreateParams);
+        
+        setOpenChannel(newChannel);
         setChannelHeaderName(channelName);
 
-        const channelHandler = new GroupChannelHandler({
-            onMessageReceived: (newChannel, message) => {
-                setMessageList((currentMessageList) => [...currentMessageList, message]);
-            }
-        });
-
-        sb.groupChannel.addGroupChannelHandler('abcd', channelHandler);
-        retrieveChannelList();
         setMessageList([]);
+        
+        await newChannel.enter();
 
-        const userIds = ['qa', 'wef'];
-        await newChannel.inviteWithUserIds(userIds);
     }
 
     // 채널 삭제
@@ -41,7 +32,7 @@ function ChannelList({sb, userId, channelList, setGroupChannel, setChannelHeader
         const PreviousMessageListQuery = channel.createPreviousMessageListQuery(PreviousMessageListQueryParams);
         const messages = await PreviousMessageListQuery.load();
         setMessageList(messages)
-        setGroupChannel(channel);
+        setOpenChannel(channel);
         setChannelHeaderName(channel.name);
     }
 

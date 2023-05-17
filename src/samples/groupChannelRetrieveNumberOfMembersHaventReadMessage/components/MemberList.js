@@ -8,8 +8,6 @@ function MemberList({ newGroupChannel, mutedMembers, setMutedMembers, retrieveAl
                 {newGroupChannel.members.map((member) =>
                     <div className="member-item" key={member.userId}>
                         {member.nickname}
-                        <button onClick={() => muteUser(member)}>mute</button>
-                        <button onClick={() => unmuteUser(member)}>unmute</button>
                     </div>
                 )}
             </div>;
@@ -18,21 +16,6 @@ function MemberList({ newGroupChannel, mutedMembers, setMutedMembers, retrieveAl
         }
     }
 
-    async function mutedMembersList() {
-        const query = newGroupChannel.createMutedUserListQuery();
-        const mutedUsers = await query.next();
-        setMutedMembers(mutedUsers);
-    }
-
-    async function muteUser(member) {
-        await newGroupChannel.muteUser(member, 1000, 'yes');
-        mutedMembersList();
-    }
-
-    async function unmuteUser(member) {
-        await newGroupChannel.unmuteUser(member);
-        mutedMembersList();
-    }
 
     return (
         <div>

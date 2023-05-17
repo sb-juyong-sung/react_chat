@@ -1,6 +1,6 @@
 import '../pages/ChatPage/ChatPage.css';
 
-function MemberList({ newGroupChannel, mutedMembers, setMutedMembers, retrieveAllUsers }) {
+function MemberList({ newGroupChannel, operatorMembers, setOperatorMembers, retrieveAllUsers }) {
 
     function membersList() {
         if (newGroupChannel) {
@@ -8,8 +8,8 @@ function MemberList({ newGroupChannel, mutedMembers, setMutedMembers, retrieveAl
                 {newGroupChannel.members.map((member) =>
                     <div className="member-item" key={member.userId}>
                         {member.nickname}
-                        <button onClick={() => muteUser(member)}>mute</button>
-                        <button onClick={() => unmuteUser(member)}>unmute</button>
+                        <button onClick={() => registerOperator(member)}>register</button>
+                        <button onClick={() => removeOperator(member)}>remove</button>
                     </div>
                 )}
             </div>;
@@ -18,20 +18,12 @@ function MemberList({ newGroupChannel, mutedMembers, setMutedMembers, retrieveAl
         }
     }
 
-    async function mutedMembersList() {
-        const query = newGroupChannel.createMutedUserListQuery();
-        const mutedUsers = await query.next();
-        setMutedMembers(mutedUsers);
+    async function registerOperator(member) {
+        await newGroupChannel.addOperators([member.userId]);
     }
 
-    async function muteUser(member) {
-        await newGroupChannel.muteUser(member, 1000, 'yes');
-        mutedMembersList();
-    }
-
-    async function unmuteUser(member) {
-        await newGroupChannel.unmuteUser(member);
-        mutedMembersList();
+    async function removeOperator(member) {
+        await newGroupChannel.removeOperators([member.userId]);
     }
 
     return (
