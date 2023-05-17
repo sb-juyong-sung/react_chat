@@ -1,5 +1,5 @@
 import './ChatPage.css';
-import { ChannelList, ChannelHeader, MessageList, MessageInput, MemberList, FreezeNotification } from '../../components';
+import { ChannelList, ChannelHeader, MessageList, MessageInput, MemberList } from '../../components';
 
 import React, { useState, useEffect } from 'react';
 import { GroupChannelModule, GroupChannelCreateParams, GroupChannelHandler, GroupChannelCollection, GroupChannelListOrder, GroupChannelFilter } from '@sendbird/chat/groupChannel';
@@ -15,7 +15,6 @@ export default function Chat({ sb, userId }) {
     const [messageList, setMessageList] = useState([]);
     const [channelList, setChannelList] = useState([]);
     const [mutedMembers, setMutedMembers] = useState([]);
-    const [freezeChannelBool, setFreezeChannelBool] = useState(false);
     const [userList, setUserList] = useState([]);
     
     const groupChannelFilter = new GroupChannelFilter();
@@ -25,12 +24,30 @@ export default function Chat({ sb, userId }) {
     groupChannelCollection.order = GroupChannelListOrder.CHRONOLOGICAL;
     const channelRetreiveHandler = {
         onchannelsAdded: (context, channels) => {
-            console.log(channels)
+            console.log(channels);
         }
     };
     groupChannelCollection.setGroupChannelCollectionHandler(channelRetreiveHandler);
 
-    
+    const markMessageHandler = new GroupChannelHandler({
+        onUnreadMemberStatusUpdated: (channel) => {
+            const newMessageList = getMessage();
+            console.log(newMessageList);
+        },
+    });
+    sb.groupChannel.addGroupChannelHandler('markMessage', markMessageHandler);
+
+    async function getMessage() {
+        const PreviousMessageListQueryParams = {}
+        const PreviousMessageListQuery = newGroupChannel.createPreviousMessageListQuery(PreviousMessageListQueryParams);
+        const messages = await PreviousMessageListQuery.load();
+
+        for (let i in messages) {
+            const readMembers = newGroupChannel.getReadMembers(messages[i]);
+            messageList[i].readCount = readMembers.length > 0;
+        }
+        return messages;
+    }
 
     async function retrieveChannelList() {
         if (groupChannelCollection.hasMore) {
@@ -57,6 +74,7 @@ export default function Chat({ sb, userId }) {
                 sb={sb}
                 userId={userId}
                 channelList={channelList}
+                newGroupChannel={newGroupChannel}
                 setGroupChannel={setGroupChannel}
                 setChannelHeaderName={setChannelHeaderName}
                 setMessageList={setMessageList}
@@ -67,25 +85,23 @@ export default function Chat({ sb, userId }) {
                 <ChannelHeader
                     newGroupChannel={newGroupChannel}
                     channelHeaderName={channelHeaderName}
-                    freezeChannelBool={freezeChannelBool}
                     setGroupChannel={setGroupChannel}
                     setMessageList={setMessageList}
                     setChannelHeaderName={setChannelHeaderName}
-                    setFreezeChannelBool={setFreezeChannelBool}
                     retrieveChannelList={retrieveChannelList}
                 />
-                {!freezeChannelBool || <FreezeNotification />}
                 <div>
                     <MessageList 
                         sb={sb}
+                        newGroupChannel={newGroupChannel}
                         messageList={messageList}
                     />
-                    {freezeChannelBool || <MessageInput 
+                    <MessageInput 
                         sb={sb}
                         newGroupChannel={newGroupChannel}
                         messageList={messageList}
                         setMessageList={setMessageList}
-                    />}
+                    />
                 </div>
             </div>
             <MemberList 
@@ -97,4 +113,5 @@ export default function Chat({ sb, userId }) {
         </div>
     );
 }
+
 
