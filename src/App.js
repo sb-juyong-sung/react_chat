@@ -10,6 +10,7 @@ import GroupChannelTypingIndicator from './samples/groupChannelTypingIndicator/G
 import GroupChannelSendAnAdminMessage from './samples/groupChannelSendAnAdminMessage/GroupChannelSendAnAdminMessage';
 import GroupChannelFreezeUnfreeze from './samples/groupChannelFreezeUnfreeze/GroupChannelFreezeUnfreeze';
 import GroupChannelMarkMessagesAsRead from './samples/groupChannelMarkMessagesAsRead/GroupChannelMarkMessagesAsRead';
+import GroupChannelRetrieveOnlineStatus from './samples/groupChannelRetrieveOnlineStatus/GroupChannelRetrieveOnlineStatus';
 
 import SendbirdChat from '@sendbird/chat';
 import { GroupChannelModule } from '@sendbird/chat/groupChannel';
@@ -27,7 +28,7 @@ const App = () => {
   );
 
   return (
-    <GroupChannelMarkMessagesAsRead sb={sb} />
+    <GroupChannelRetrieveOnlineStatus sb={sb} />
   );
 }
 
