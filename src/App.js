@@ -13,6 +13,8 @@ import GroupChannelMarkMessagesAsRead from './samples/groupChannelMarkMessagesAs
 import GroupChannelRetrieveOnlineStatus from './samples/groupChannelRetrieveOnlineStatus/GroupChannelRetrieveOnlineStatus';
 import GroupChannelRetrieveNumberOfMembersHaventReadMessage from './samples/groupChannelRetrieveNumberOfMembersHaventReadMessage/GroupChannelRetrieveNumberOfMembersHaventReadMessage';
 
+import OpenChannelSendAnAdminMessage from './samples/openChannelSendAnAdminMessage/OpenChannelSendAnAdminMessage';
+
 import SendbirdChat from '@sendbird/chat';
 import { GroupChannelModule } from '@sendbird/chat/groupChannel';
 import { OpenChannelModule } from '@sendbird/chat/openChannel';
@@ -29,7 +31,7 @@ const App = () => {
   );
 
   return (
-    <GroupChannelRetrieveNumberOfMembersHaventReadMessage sb={sb} />
+    <BasicOpenChannelSample sb={sb} />
   );
 }
 
