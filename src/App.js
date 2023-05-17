@@ -14,6 +14,7 @@ import GroupChannelRetrieveOnlineStatus from './samples/groupChannelRetrieveOnli
 import GroupChannelRetrieveNumberOfMembersHaventReadMessage from './samples/groupChannelRetrieveNumberOfMembersHaventReadMessage/GroupChannelRetrieveNumberOfMembersHaventReadMessage';
 
 import OpenChannelSendAnAdminMessage from './samples/openChannelSendAnAdminMessage/OpenChannelSendAnAdminMessage';
+import OpenChannelCopyMessage from './samples/openChannelCopyMessage/OpenChannelCopyMessage';
 
 import SendbirdChat from '@sendbird/chat';
 import { GroupChannelModule } from '@sendbird/chat/groupChannel';
@@ -31,7 +32,7 @@ const App = () => {
   );
 
   return (
-    <OpenChannelSendAnAdminMessage sb={sb} />
+    <OpenChannelCopyMessage sb={sb} />
   );
 }
 
