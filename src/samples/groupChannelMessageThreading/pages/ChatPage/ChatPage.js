@@ -58,10 +58,13 @@ export default function Chat({ sb, userId }) {
                 sb={sb}
                 userId={userId}
                 channelList={channelList}
+                newGroupChannel={newGroupChannel}
+                setThreadList={setThreadList}
                 setGroupChannel={setGroupChannel}
                 setChannelHeaderName={setChannelHeaderName}
                 setMessageList={setMessageList}
                 setChannelList={setChannelList}
+                setThreadState={setThreadState}
                 retrieveChannelList={retrieveChannelList}
             />
             <div className="channel">
@@ -78,6 +81,8 @@ export default function Chat({ sb, userId }) {
                         sb={sb}
                         messageList={messageList}
                         threadList={threadList}
+                        parentMessage={parentMessage}
+                        newGroupChannel={newGroupChannel}
                         setThreadState={setThreadState}
                         setParentMessage={setParentMessage}
                         setThreadList={setThreadList}
@@ -103,6 +108,7 @@ export default function Chat({ sb, userId }) {
                     <div>
                         <ThreadList
                             sb={sb}
+                            newGroupChannel={newGroupChannel}
                             parentMessage={parentMessage}
                             threadList={threadList}
                         />

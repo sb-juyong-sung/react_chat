@@ -5,7 +5,7 @@ function ThreadInput({sb, newGroupChannel, parentMessage, messageList, threadLis
     
     function clickEnter(e) {
         if (e.key === 'Enter') {
-            sendMessage(document.getElementById('textMessage').value)
+            sendMessage(document.getElementById('threadMessage').value)
         }
     }
 
@@ -27,7 +27,6 @@ function ThreadInput({sb, newGroupChannel, parentMessage, messageList, threadLis
                         ...threadList,
                         [parentMessage.messageId]: [...threadList[parentMessage.messageId], message]
                     }));
-                    console.log(message);
                 });
 
             

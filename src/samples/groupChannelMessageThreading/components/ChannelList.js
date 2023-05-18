@@ -2,7 +2,7 @@ import '../pages/ChatPage/ChatPage.css';
 
 import { GroupChannelHandler } from '@sendbird/chat/groupChannel';
 
-function ChannelList({sb, userId, channelList, setGroupChannel, setChannelHeaderName, setMessageList, setChannelList, retrieveChannelList}) {
+function ChannelList({sb, userId, channelList, newGroupChannel, setThreadList, setGroupChannel, setChannelHeaderName, setMessageList, setChannelList, setThreadState, retrieveChannelList}) {
 
     // 채널 생성
     const createChannel = async (channelName) => {
@@ -40,9 +40,34 @@ function ChannelList({sb, userId, channelList, setGroupChannel, setChannelHeader
         const PreviousMessageListQueryParams = {}
         const PreviousMessageListQuery = channel.createPreviousMessageListQuery(PreviousMessageListQueryParams);
         const messages = await PreviousMessageListQuery.load();
+        
+
+        setThreadState(false);
         setMessageList(messages)
         setGroupChannel(channel);
         setChannelHeaderName(channel.name);
+
+        for (let i = 0; i < messages.length; i++) {
+            const msg = messages[i]
+            getThreadMessage(msg);
+        }
+    }
+
+    async function getThreadMessage(parentMessage) {
+
+        const paramsThreadedMessageListParams = {
+            prevResultSize: 10,
+            nextResultSize: 10,
+            isInclusive: true,
+            reverse: false,
+            includeParentMessageInfo: false,
+        }
+
+        const { threadedMessages } = await parentMessage.getThreadedMessagesByTimestamp(30, paramsThreadedMessageListParams);
+        setThreadList(threadList => ({
+            ...threadList,
+            [parentMessage.messageId]: threadedMessages || []
+        }));
     }
 
     return (
