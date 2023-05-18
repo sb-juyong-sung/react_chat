@@ -1,11 +1,11 @@
 import { UserMessage } from '@sendbird/chat/message';
 import '../pages/ChatPage/ChatPage.css';
 
-function ThreadInput({sb, newGroupChannel, parentMessage, messageList, setMessageList}) {
-
+function ThreadInput({sb, newGroupChannel, parentMessage, messageList, threadList, setMessageList, setThreadList}) {
+    
     function clickEnter(e) {
         if (e.key === 'Enter') {
-            sendMessage(document.getElementById('textMessage').value)
+            sendMessage(document.getElementById('threadMessage').value)
         }
     }
 
@@ -23,8 +23,10 @@ function ThreadInput({sb, newGroupChannel, parentMessage, messageList, setMessag
                     console.log("error")
                 })
                 .onSucceeded((message) => {
-                    setMessageList([...messageList, message]);
-                    console.log(message);
+                    setThreadList(threadList => ({
+                        ...threadList,
+                        [parentMessage.messageId]: [...threadList[parentMessage.messageId], message]
+                    }));
                 });
 
             

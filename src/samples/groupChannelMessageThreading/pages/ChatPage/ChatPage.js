@@ -18,6 +18,7 @@ export default function Chat({ sb, userId }) {
     const [threadState, setThreadState] = useState(false);
     const [userList, setUserList] = useState([]);
     const [parentMessage, setParentMessage] = useState(null);
+    const [threadList, setThreadList] = useState({});
 
     const groupChannelFilter = new GroupChannelFilter();
     groupChannelFilter.includeEmpty = true;
@@ -57,10 +58,13 @@ export default function Chat({ sb, userId }) {
                 sb={sb}
                 userId={userId}
                 channelList={channelList}
+                newGroupChannel={newGroupChannel}
+                setThreadList={setThreadList}
                 setGroupChannel={setGroupChannel}
                 setChannelHeaderName={setChannelHeaderName}
                 setMessageList={setMessageList}
                 setChannelList={setChannelList}
+                setThreadState={setThreadState}
                 retrieveChannelList={retrieveChannelList}
             />
             <div className="channel">
@@ -76,8 +80,12 @@ export default function Chat({ sb, userId }) {
                     <MessageList
                         sb={sb}
                         messageList={messageList}
+                        threadList={threadList}
+                        parentMessage={parentMessage}
+                        newGroupChannel={newGroupChannel}
                         setThreadState={setThreadState}
                         setParentMessage={setParentMessage}
+                        setThreadList={setThreadList}
                     />
                     <MessageInput
                         sb={sb}
@@ -100,15 +108,18 @@ export default function Chat({ sb, userId }) {
                     <div>
                         <ThreadList
                             sb={sb}
-                            messageList={messageList}
+                            newGroupChannel={newGroupChannel}
                             parentMessage={parentMessage}
+                            threadList={threadList}
                         />
                         <ThreadInput
                             sb={sb}
                             newGroupChannel={newGroupChannel}
                             parentMessage={parentMessage}
                             messageList={messageList}
+                            threadList={threadList}
                             setMessageList={setMessageList}
+                            setThreadList={setThreadList}
                         />
                     </div>
                 </div>

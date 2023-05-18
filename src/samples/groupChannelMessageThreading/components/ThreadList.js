@@ -1,7 +1,9 @@
 import '../pages/ChatPage/ChatPage.css';
 
-function ThreadList({sb, messageList, parentMessage}) {
+function ThreadList({sb, newGroupChannel, parentMessage, threadList}) {
 
+    const messageList = threadList[parentMessage.messageId];
+    
     const rendorMessageList = messageList.map((msg) => {
         const messageSentbyMe = msg.sender.userId === sb.currentUser.userId;
         return (
@@ -12,7 +14,6 @@ function ThreadList({sb, messageList, parentMessage}) {
                         <div>{msg.createAt}</div>
                     </div>
                     <div>{msg.message}</div>
-                    <button>thread</button>
                 </div>
             </div>
         )
