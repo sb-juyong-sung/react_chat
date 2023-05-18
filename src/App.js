@@ -12,6 +12,7 @@ import GroupChannelFreezeUnfreeze from './samples/groupChannelFreezeUnfreeze/Gro
 import GroupChannelMarkMessagesAsRead from './samples/groupChannelMarkMessagesAsRead/GroupChannelMarkMessagesAsRead';
 import GroupChannelRetrieveOnlineStatus from './samples/groupChannelRetrieveOnlineStatus/GroupChannelRetrieveOnlineStatus';
 import GroupChannelRetrieveNumberOfMembersHaventReadMessage from './samples/groupChannelRetrieveNumberOfMembersHaventReadMessage/GroupChannelRetrieveNumberOfMembersHaventReadMessage';
+import GroupChannelMessageThreading from './samples/groupChannelMessageThreading/GroupChannelMessageThreading';
 
 import OpenChannelSendAnAdminMessage from './samples/openChannelSendAnAdminMessage/OpenChannelSendAnAdminMessage';
 import OpenChannelCopyMessage from './samples/openChannelCopyMessage/OpenChannelCopyMessage';
@@ -33,7 +34,7 @@ const App = () => {
   );
 
   return (
-    <OpenChannelFreeze sb={sb} />
+    <BasicGroupChannelSample sb={sb} />
   );
 }
 

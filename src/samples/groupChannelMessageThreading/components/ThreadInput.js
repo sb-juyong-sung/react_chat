@@ -1,0 +1,47 @@
+import { UserMessage } from '@sendbird/chat/message';
+import '../pages/ChatPage/ChatPage.css';
+
+function ThreadInput({sb, newGroupChannel, parentMessage, messageList, setMessageList}) {
+
+    function clickEnter(e) {
+        if (e.key === 'Enter') {
+            sendMessage(document.getElementById('textMessage').value)
+        }
+    }
+
+    function sendMessage(textMessage) {
+        const UserMessageCreateParams = {};
+        UserMessageCreateParams.parentMessageId = parentMessage.messageId;
+        UserMessageCreateParams.message = textMessage;
+        UserMessageCreateParams.sender = { nickname: sb.currentUser.nickname, userId: sb.currentUser.userId };
+        if (newGroupChannel) {
+            newGroupChannel.sendUserMessage(UserMessageCreateParams)
+                .onPending((message) => {
+
+                })
+                .onFailed((error) => {
+                    console.log("error")
+                })
+                .onSucceeded((message) => {
+                    setMessageList([...messageList, message]);
+                    console.log(message);
+                });
+
+            
+        } else {
+            return null;
+        }
+
+    }
+
+    return (
+        <div className="message-input">
+            <input id='threadMessage' type="text" onKeyPress={clickEnter}></input>
+            <div>
+                <button className="send-message-button" onClick={() => sendMessage(document.getElementById('threadMessage').value)}>send</button>
+            </div>
+        </div>
+    );
+}
+
+export default ThreadInput;
