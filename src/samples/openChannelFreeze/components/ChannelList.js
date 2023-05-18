@@ -8,6 +8,7 @@ function ChannelList({sb, userId, channelList, setOpenChannel, setChannelHeaderN
     const createChannel = async (channelName) => {
         const OpenChannelCreateParams = {
             name: channelName,
+            operatorUserIds: [userId]
         };
         const newChannel = await sb.openChannel.createChannel(OpenChannelCreateParams);
         await newChannel.enter();
@@ -39,7 +40,6 @@ function ChannelList({sb, userId, channelList, setOpenChannel, setChannelHeaderN
                 setMessageList((currentMessageList) => [...currentMessageList, message]);
             }
         });
-        sb.openChannel.addOpenChannelHandler('messageHandler', channelHandler);
         const PreviousMessageListQueryParams = {}
         const PreviousMessageListQuery = channel.createPreviousMessageListQuery(PreviousMessageListQueryParams);
         const messages = await PreviousMessageListQuery.load();

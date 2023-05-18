@@ -12,8 +12,11 @@ import GroupChannelFreezeUnfreeze from './samples/groupChannelFreezeUnfreeze/Gro
 import GroupChannelMarkMessagesAsRead from './samples/groupChannelMarkMessagesAsRead/GroupChannelMarkMessagesAsRead';
 import GroupChannelRetrieveOnlineStatus from './samples/groupChannelRetrieveOnlineStatus/GroupChannelRetrieveOnlineStatus';
 import GroupChannelRetrieveNumberOfMembersHaventReadMessage from './samples/groupChannelRetrieveNumberOfMembersHaventReadMessage/GroupChannelRetrieveNumberOfMembersHaventReadMessage';
+import GroupChannelMessageThreading from './samples/groupChannelMessageThreading/GroupChannelMessageThreading';
 
 import OpenChannelSendAnAdminMessage from './samples/openChannelSendAnAdminMessage/OpenChannelSendAnAdminMessage';
+import OpenChannelCopyMessage from './samples/openChannelCopyMessage/OpenChannelCopyMessage';
+import OpenChannelFreeze from './samples/openChannelFreeze/OpenChannelFreeze';
 
 import SendbirdChat from '@sendbird/chat';
 import { GroupChannelModule } from '@sendbird/chat/groupChannel';
@@ -31,7 +34,7 @@ const App = () => {
   );
 
   return (
-    <BasicOpenChannelSample sb={sb} />
+    <BasicGroupChannelSample sb={sb} />
   );
 }
 

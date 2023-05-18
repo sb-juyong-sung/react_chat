@@ -3,10 +3,6 @@ import '../pages/ChatPage/ChatPage.css';
 function MessageList({sb, messageList}) {
 
     const rendorMessageList = messageList.map((msg) => {
-
-        if (msg.messageType === "admin"){
-            return <div>admin: {msg.message}</div>
-        } else {
         const messageSentbyMe = msg.sender.userId === sb.currentUser.userId;
         return (
             <div className={`message-item ${messageSentbyMe ? 'message-from-you' : ''}`}>
@@ -18,7 +14,7 @@ function MessageList({sb, messageList}) {
                     <div>{msg.message}</div>
                 </div>
             </div>
-        )}
+        )
     }
     );
 
