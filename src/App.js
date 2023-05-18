@@ -34,7 +34,7 @@ const App = () => {
   );
 
   return (
-    <BasicGroupChannelSample sb={sb} />
+    <GroupChannelMessageThreading sb={sb} />
   );
 }
 

@@ -1,6 +1,6 @@
 import '../pages/ChatPage/ChatPage.css';
 
-function MessageList({sb, messageList, setThreadState, setParentMessage}) {
+function MessageList({sb, messageList, threadList, setThreadState, setParentMessage, setThreadList}) {
 
     const rendorMessageList = messageList.map((msg) => {
         const messageSentbyMe = msg.sender.userId === sb.currentUser.userId;
@@ -22,6 +22,10 @@ function MessageList({sb, messageList, setThreadState, setParentMessage}) {
     function makeThread(msg) {
         setThreadState(true);
         setParentMessage(msg);
+        setThreadList(threadList => ({
+            ...threadList,
+            [msg.messageId]: threadList[msg.messageId] || []
+        }));
     }
 
     return (

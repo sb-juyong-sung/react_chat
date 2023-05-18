@@ -17,6 +17,7 @@ function ChannelList({sb, userId, channelList, setGroupChannel, setChannelHeader
 
         const channelHandler = new GroupChannelHandler({
             onMessageReceived: (newChannel, message) => {
+                console.log('hey');
                 setMessageList((currentMessageList) => [...currentMessageList, message]);
             }
         });

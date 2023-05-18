@@ -1,7 +1,9 @@
 import '../pages/ChatPage/ChatPage.css';
 
-function ThreadList({sb, messageList, parentMessage}) {
+function ThreadList({sb, parentMessage, threadList}) {
 
+    const messageList = threadList[parentMessage.messageId];
+    console.log(messageList);
     const rendorMessageList = messageList.map((msg) => {
         const messageSentbyMe = msg.sender.userId === sb.currentUser.userId;
         return (
