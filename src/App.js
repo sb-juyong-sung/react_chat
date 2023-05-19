@@ -13,6 +13,7 @@ import GroupChannelMarkMessagesAsRead from './samples/groupChannelMarkMessagesAs
 import GroupChannelRetrieveOnlineStatus from './samples/groupChannelRetrieveOnlineStatus/GroupChannelRetrieveOnlineStatus';
 import GroupChannelRetrieveNumberOfMembersHaventReadMessage from './samples/groupChannelRetrieveNumberOfMembersHaventReadMessage/GroupChannelRetrieveNumberOfMembersHaventReadMessage';
 import GroupChannelMessageThreading from './samples/groupChannelMessageThreading/GroupChannelMessageThreading';
+import GroupChannelUserProfileUpdate from './samples/groupChannelUserProfileUpdate/GroupChannelUserProfileUpdate';
 
 import OpenChannelSendAnAdminMessage from './samples/openChannelSendAnAdminMessage/OpenChannelSendAnAdminMessage';
 import OpenChannelCopyMessage from './samples/openChannelCopyMessage/OpenChannelCopyMessage';
@@ -34,7 +35,7 @@ const App = () => {
   );
 
   return (
-    <GroupChannelRetrieveOnlineStatus sb={sb} />
+    <GroupChannelUserProfileUpdate sb={sb} />
     
   );
 }
