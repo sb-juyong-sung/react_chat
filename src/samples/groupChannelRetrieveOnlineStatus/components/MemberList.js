@@ -21,10 +21,25 @@ function MemberList({ sb, newGroupChannel, mutedMembers, newMembersList, setMute
     }
 
     async function refreshChannel(channel) {
-        // await channel.refresh();
+        await newGroupChannel.refresh();
+        const queryParams = {userIdsFilter : []}
+        for (let i = 0; i < channel.members.length; i++) {
+            queryParams.userIdsFilter = [...queryParams.userIdsFilter, channel.members[i].nickname]
+        }
         
-        setNewMembersList(channel.members);
+        
+        const query = sb.createApplicationUserListQuery(queryParams);
+
+        const statusList = await query.next();
+    
+        setNewMembersList(statusList);
         setShowMembersList(true);
+
+        
+
+
+
+
         return channel;
     }
 
