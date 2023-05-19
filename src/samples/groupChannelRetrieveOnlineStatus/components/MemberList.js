@@ -4,6 +4,7 @@ import {useState, useEffect} from 'react';
 function MemberList({ sb, newGroupChannel, mutedMembers, newMembersList, setMutedMembers, setNewMembersList, retrieveAllUsers }) {
 
     const [showMembersList, setShowMembersList] = useState(true);
+    // const [currentChannel, handleChannel] = useState(null);
 
     function membersList() {
         if (newGroupChannel) {
@@ -20,6 +21,21 @@ function MemberList({ sb, newGroupChannel, mutedMembers, newMembersList, setMute
         }
     }
 
+    // const handleChannelUpdate = async (channel) => {
+    //     try {
+    //         return await channel.refresh();
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+    // }
+
+    // useEffect(async () => {
+    //     if (newGroupChannel) {
+    //         await handleChannelUpdate(newGroupChannel);
+    //         handleChannel(newGroupChannel)
+    //     }
+    // }, [newGroupChannel]);
+
     async function refreshChannel(channel) {
         await newGroupChannel.refresh();
         const queryParams = {userIdsFilter : []}
@@ -34,14 +50,10 @@ function MemberList({ sb, newGroupChannel, mutedMembers, newMembersList, setMute
     
         setNewMembersList(statusList);
         setShowMembersList(true);
-
-        
-
-
-
-
         return channel;
     }
+
+    
 
     function getStatus(channel) {
         const c = refreshChannel(channel);

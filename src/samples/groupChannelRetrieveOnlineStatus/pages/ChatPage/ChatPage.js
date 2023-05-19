@@ -37,7 +37,7 @@ export default function Chat({ sb, userId }) {
             setChannelList((currentChannelList) => [...channelsLoad]);
         }
     }
-
+    
     useEffect(() => {
         retrieveChannelList();
     }, []);
