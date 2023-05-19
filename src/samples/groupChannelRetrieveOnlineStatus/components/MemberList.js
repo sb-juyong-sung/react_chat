@@ -1,9 +1,8 @@
 import '../pages/ChatPage/ChatPage.css';
 import {useState, useEffect} from 'react';
 
-function MemberList({ newGroupChannel, mutedMembers, setMutedMembers, retrieveAllUsers }) {
+function MemberList({ sb, newGroupChannel, mutedMembers, newMembersList, setMutedMembers, setNewMembersList, retrieveAllUsers }) {
 
-    const [newMembersList, setNewMembersList] = useState([]);
     const [showMembersList, setShowMembersList] = useState(true);
 
     function membersList() {
@@ -21,10 +20,16 @@ function MemberList({ newGroupChannel, mutedMembers, setMutedMembers, retrieveAl
         }
     }
 
-    async function refreshChannel() {
-        await newGroupChannel.refresh();
-        setNewMembersList(newGroupChannel.members);
+    async function refreshChannel(channel) {
+        // await channel.refresh();
+        
+        setNewMembersList(channel.members);
         setShowMembersList(true);
+        return channel;
+    }
+
+    function getStatus(channel) {
+        const c = refreshChannel(channel);
     }
 
     return (
@@ -33,7 +38,7 @@ function MemberList({ newGroupChannel, mutedMembers, setMutedMembers, retrieveAl
                 <h1>Members</h1>
                 <button onClick={() => retrieveAllUsers()}>Invite</button>
                 <div>
-                <button onClick={() => refreshChannel()}>Refresh</button>
+                <button onClick={() => getStatus(newGroupChannel)}>Refresh</button>
                 </div>
                 {membersList()}
             </div>

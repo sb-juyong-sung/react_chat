@@ -26,34 +26,9 @@ function MessageList({sb, messageList, threadList, parentMessage, newGroupChanne
             ...threadList,
             [msg.messageId]: threadList[msg.messageId] || []
         }));
-
-        getThreadMessage(parentMessage);
     }
 
 
-    async function getThreadMessage(parentMessage) {
-        const params = {
-            messageId: parentMessage.messageId,
-            channelType: "group", // Acceptable values are open and group.
-            channelUrl: newGroupChannel.url,
-        };
-
-
-        const paramsThreadedMessageListParams = {
-            prevResultSize: 10,
-            nextResultSize: 10,
-            isInclusive: true,
-            reverse: false,
-            includeParentMessageInfo: false,
-        }
-
-        const { threadedMessages } = await parentMessage.getThreadedMessagesByTimestamp(30, paramsThreadedMessageListParams);
-        setThreadList(threadList => ({
-            ...threadList,
-            [parentMessage.messageId]: threadedMessages || []
-        }));
-
-    }
 
     return (
         <div className='message-list'>

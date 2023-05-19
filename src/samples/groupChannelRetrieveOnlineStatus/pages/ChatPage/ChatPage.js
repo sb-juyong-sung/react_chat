@@ -15,6 +15,7 @@ export default function Chat({ sb, userId }) {
     const [messageList, setMessageList] = useState([]);
     const [channelList, setChannelList] = useState([]);
     const [mutedMembers, setMutedMembers] = useState([]);
+    const [newMembersList, setNewMembersList] = useState([]);
     const [userList, setUserList] = useState([]);
     
     const groupChannelFilter = new GroupChannelFilter();
@@ -55,7 +56,9 @@ export default function Chat({ sb, userId }) {
                 sb={sb}
                 userId={userId}
                 channelList={channelList}
+                newGroupChannel={newGroupChannel}
                 setGroupChannel={setGroupChannel}
+                setNewMembersList={setNewMembersList}
                 setChannelHeaderName={setChannelHeaderName}
                 setMessageList={setMessageList}
                 setChannelList={setChannelList}
@@ -84,8 +87,11 @@ export default function Chat({ sb, userId }) {
                 </div>
             </div>
             <MemberList 
+                sb={sb}
                 newGroupChannel={newGroupChannel}
                 mutedMembers={mutedMembers}
+                newMembersList={newMembersList}
+                setNewMembersList={setNewMembersList}
                 setMutedMembers={setMutedMembers}
                 retrieveAllUsers={retrieveAllUsers}
             />

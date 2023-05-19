@@ -34,7 +34,8 @@ const App = () => {
   );
 
   return (
-    <GroupChannelMessageThreading sb={sb} />
+    <GroupChannelRetrieveOnlineStatus sb={sb} />
+    
   );
 }
 
