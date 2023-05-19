@@ -2,7 +2,7 @@ import '../pages/ChatPage/ChatPage.css';
 
 import { GroupChannelHandler } from '@sendbird/chat/groupChannel';
 
-function ChannelList({sb, userId, channelList, setGroupChannel, setChannelHeaderName, setMessageList, setChannelList, retrieveChannelList}) {
+function ChannelList({sb, newGroupChannel, userId, channelList, setGroupChannel, setChannelHeaderName, setMessageList, setChannelList, retrieveChannelList}) {
 
     // 채널 생성
     const createChannel = async (channelName) => {
@@ -16,9 +16,10 @@ function ChannelList({sb, userId, channelList, setGroupChannel, setChannelHeader
         setChannelHeaderName(channelName);
 
         const channelHandler = new GroupChannelHandler({
-            onMessageReceived: (newChannel, message) => {
-                console.log('hey');
-                setMessageList((currentMessageList) => [...currentMessageList, message]);
+            onMessageReceived: (channel, message) => {
+                if (channel.url === newChannel.url) {
+                    setMessageList((currentMessageList) => [...currentMessageList, message]);
+                }
             }
         });
 
@@ -38,12 +39,24 @@ function ChannelList({sb, userId, channelList, setGroupChannel, setChannelHeader
 
     // 채널을 클릭하였을 시 채널에 입장하는 효과
     async function loadChannel(channel) {
+        {newGroupChannel && sb.groupChannel.removeGroupChannelHandler(newGroupChannel.url)};
         const PreviousMessageListQueryParams = {}
         const PreviousMessageListQuery = channel.createPreviousMessageListQuery(PreviousMessageListQueryParams);
         const messages = await PreviousMessageListQuery.load();
         setMessageList(messages)
         setGroupChannel(channel);
         setChannelHeaderName(channel.name);
+
+        const channelHandler = new GroupChannelHandler({
+            onMessageReceived: (newChannel, message) => {
+                if (channel.url === newChannel.url) {
+                    setMessageList((currentMessageList) => [...currentMessageList, message]);
+                }
+            }
+        });
+
+        sb.groupChannel.addGroupChannelHandler(channel.url, channelHandler);
+        retrieveChannelList();
     }
 
     return (

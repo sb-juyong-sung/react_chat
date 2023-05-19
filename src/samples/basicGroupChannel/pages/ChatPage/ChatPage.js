@@ -53,6 +53,7 @@ export default function Chat({ sb, userId }) {
         <div className='container'>
             <ChannelList
                 sb={sb}
+                newGroupChannel={newGroupChannel}
                 userId={userId}
                 channelList={channelList}
                 setGroupChannel={setGroupChannel}
