@@ -2,7 +2,10 @@ import '../pages/ChatPage/ChatPage.css';
 
 import { GroupChannelHandler } from '@sendbird/chat/groupChannel';
 
-function ChannelList({sb, newGroupChannel, userId, channelList, setGroupChannel, setChannelHeaderName, setMessageList, setChannelList, retrieveChannelList}) {
+function ChannelList({sb, newGroupChannel, userId, channelList, 
+    showUnreceived, countUnreceived, currentMessage,
+    setShowUnreceived, setCountUnreceived, setCurrentMessage,
+    setGroupChannel, setChannelHeaderName, setMessageList, setChannelList, retrieveChannelList}) {
 
     // 채널 생성
     const createChannel = async (channelName) => {
@@ -27,8 +30,12 @@ function ChannelList({sb, newGroupChannel, userId, channelList, setGroupChannel,
         retrieveChannelList();
         setMessageList([]);
 
-        const userIds = ['qa', 'wef'];
-        await newChannel.inviteWithUserIds(userIds);
+        setShowUnreceived(false);
+        setCountUnreceived(0);
+        setCurrentMessage(null);
+
+        // const userIds = ['qa', 'wef'];
+        // await newChannel.inviteWithUserIds(userIds);
     }
 
     // 채널 삭제
@@ -46,6 +53,9 @@ function ChannelList({sb, newGroupChannel, userId, channelList, setGroupChannel,
         setMessageList(messages)
         setGroupChannel(channel);
         setChannelHeaderName(channel.name);
+        setShowUnreceived(false);
+        setCountUnreceived(0);
+        setCurrentMessage(null);
 
         const channelHandler = new GroupChannelHandler({
             onMessageReceived: (newChannel, message) => {

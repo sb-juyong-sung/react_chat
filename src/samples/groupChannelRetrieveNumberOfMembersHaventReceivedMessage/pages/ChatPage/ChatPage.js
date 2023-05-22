@@ -15,6 +15,9 @@ export default function Chat({ sb, userId }) {
     const [messageList, setMessageList] = useState([]);
     const [channelList, setChannelList] = useState([]);
     const [mutedMembers, setMutedMembers] = useState([]);
+    const [showUnreceived, setShowUnreceived] = useState(false);
+    const [countUnreceived, setCountUnreceived] = useState(null);
+    const [currentMessage, setCurrentMessage] = useState(null);
     const [userList, setUserList] = useState([]);
     
     const groupChannelFilter = new GroupChannelFilter();
@@ -56,6 +59,12 @@ export default function Chat({ sb, userId }) {
                 newGroupChannel={newGroupChannel}
                 userId={userId}
                 channelList={channelList}
+                showUnreceived={showUnreceived}
+                countUnreceived={countUnreceived}
+                currentMessage={currentMessage}
+                setShowUnreceived={setShowUnreceived}
+                setCountUnreceived={setCountUnreceived}
+                setCurrentMessage={setCurrentMessage}
                 setGroupChannel={setGroupChannel}
                 setChannelHeaderName={setChannelHeaderName}
                 setMessageList={setMessageList}
@@ -74,13 +83,20 @@ export default function Chat({ sb, userId }) {
                 <div>
                     <MessageList 
                         sb={sb}
+                        newGroupChannel={newGroupChannel}
                         messageList={messageList}
+                        showUnreceived={showUnreceived}
+                        countUnreceived={countUnreceived}
+                        currentMessage={currentMessage}
+                        setShowUnreceived={setShowUnreceived}
+                        setCountUnreceived={setCountUnreceived}
+                        setCurrentMessage={setCurrentMessage}
                     />
                     <MessageInput 
                         sb={sb}
                         newGroupChannel={newGroupChannel}
                         messageList={messageList}
-                        setMessageList={setMessageList}
+                        setMessageList={setMessageList}  
                     />
                 </div>
             </div>

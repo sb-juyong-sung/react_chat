@@ -21,11 +21,10 @@ function MessageInput({sb, newGroupChannel, messageList, setMessageList}) {
                     console.log("error")
                 })
                 .onSucceeded((message) => {
-                    const numberOfUndeliveredMembers = newGroupChannel.getUndeliveredMemberCount(message);
-                    console.log(numberOfUndeliveredMembers);
+                    setMessageList([...messageList, message]);
                 });
 
-            setMessageList([...messageList, UserMessageCreateParams]);
+            
         } else {
             return null;
         }
