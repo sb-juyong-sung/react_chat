@@ -21,10 +21,9 @@ function MessageInput({sb, newGroupChannel, messageList, setMessageList}) {
                     console.log("error")
                 })
                 .onSucceeded((message) => {
-
+                    setMessageList([...messageList, message]);
                 });
-
-            setMessageList([...messageList, UserMessageCreateParams]);
+            
         } else {
             return null;
         }
