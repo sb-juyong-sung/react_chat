@@ -1,11 +1,15 @@
 import '../pages/ChatPage/ChatPage.css';
+import { useState } from 'react';
 
 function MessageList({ sb, newGroupChannel, messageList }) {
 
-    async function updatePollOption(poll, pollId, optionId) {
-        const PollVoteEvent = await newGroupChannel.votePoll(pollId, [optionId]);
+    async function updatePollOption(e, poll, pollId, optionId) {
+        console.log(e);
+        const PollVoteEvent = await newGroupChannel.votePoll(pollId, []);
         console.log(PollVoteEvent);
+
         poll.applyPollVoteEvent(PollVoteEvent);
+        
     }
 
     const rendorMessageList = messageList.map((msg) => {
@@ -28,13 +32,14 @@ function MessageList({ sb, newGroupChannel, messageList }) {
                             <h3>Poll</h3>
                             <div>{msg._poll.title}:</div>
                             <div>
-                                {msg._poll.options.map((option) => {
+                                {msg._poll.options.map((option, i) => {
                                     return (
                                         <div key={option.id} >
                                             <span style={{ marginRight: "5px" }}>{option.voteCount}:</span>
                                             <input
                                                 type='checkbox'
-                                                onClick={() => updatePollOption(msg._poll, option.pollId, option.id)}
+                                                // checked={false}
+                                                onChange={(e) => updatePollOption(e, msg._poll, option.pollId, option.id )}
                                             />
                                             {option.text}
                                         </div>
