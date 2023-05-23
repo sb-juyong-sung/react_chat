@@ -4,6 +4,7 @@ import MessageList from './MessageList';
 import MessageInput from './MessageInput';
 import MemberList from './MemberList';
 import CreatePoll from './CreatePoll';
+import AddOption from './AddOption';
 
 export { ChannelList, ChannelHeader, MessageList, MessageInput, MemberList,
-    CreatePoll };
+    CreatePoll, AddOption };

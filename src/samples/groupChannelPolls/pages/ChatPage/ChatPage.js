@@ -1,7 +1,7 @@
 import './ChatPage.css';
 import {
     ChannelList, ChannelHeader, MessageList, MessageInput, MemberList,
-    CreatePoll
+    CreatePoll, AddOption
 } from '../../components';
 
 import React, { useState, useEffect } from 'react';
@@ -18,7 +18,10 @@ export default function Chat({ sb, userId }) {
     const [channelList, setChannelList] = useState([]);
     const [mutedMembers, setMutedMembers] = useState([]);
     const [showPoll, setShowPoll] = useState(false);
+    const [showAddOption, setShowAddOption] = useState(false);
+    const [currentPoll, setCurrentPoll] = useState(null);
     const [userList, setUserList] = useState([]);
+
 
     const groupChannelFilter = new GroupChannelFilter();
     groupChannelFilter.includeEmpty = true;
@@ -75,6 +78,14 @@ export default function Chat({ sb, userId }) {
                     setShowPoll={setShowPoll}
                 />
             )}
+            {showAddOption && (
+                <AddOption
+                    newGroupChannel={newGroupChannel}
+                    currentPoll={currentPoll}
+                    showAddOption={showAddOption}
+                    setShowAddOption={setShowAddOption}
+                />
+            )}
             <div className="channel">
                 <ChannelHeader
                     newGroupChannel={newGroupChannel}
@@ -89,6 +100,9 @@ export default function Chat({ sb, userId }) {
                         sb={sb}
                         newGroupChannel={newGroupChannel}
                         messageList={messageList}
+                        showAddOption={showAddOption}
+                        setCurrentPoll={setCurrentPoll}
+                        setShowAddOption={setShowAddOption}
                     />
                     <MessageInput
                         sb={sb}
