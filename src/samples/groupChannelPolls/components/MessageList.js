@@ -5,6 +5,7 @@ import { useState } from 'react';
 function MessageList({ sb, newGroupChannel, messageList }) {
     const [voteEvent, setVoteEvent] = useState(null);
 
+
     async function updatePollOption(e, poll, pollId, optionId) {
 
         let PVoteEvent = null;

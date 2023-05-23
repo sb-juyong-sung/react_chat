@@ -1,5 +1,8 @@
 import './ChatPage.css';
-import { ChannelList, ChannelHeader, MessageList, MessageInput, MemberList } from '../../components';
+import {
+    ChannelList, ChannelHeader, MessageList, MessageInput, MemberList,
+    CreatePoll
+} from '../../components';
 
 import React, { useState, useEffect } from 'react';
 import { GroupChannelModule, GroupChannelCreateParams, GroupChannelHandler, GroupChannelCollection, GroupChannelListOrder, GroupChannelFilter } from '@sendbird/chat/groupChannel';
@@ -16,7 +19,7 @@ export default function Chat({ sb, userId }) {
     const [mutedMembers, setMutedMembers] = useState([]);
     const [showPoll, setShowPoll] = useState(false);
     const [userList, setUserList] = useState([]);
-    
+
     const groupChannelFilter = new GroupChannelFilter();
     groupChannelFilter.includeEmpty = true;
     const groupChannelCollection = sb.groupChannel.createGroupChannelCollection();
@@ -62,6 +65,16 @@ export default function Chat({ sb, userId }) {
                 setChannelList={setChannelList}
                 retrieveChannelList={retrieveChannelList}
             />
+            {showPoll && (
+                <CreatePoll
+                    sb={sb}
+                    newGroupChannel={newGroupChannel}
+                    messageList={messageList}
+                    showPoll={showPoll}
+                    setMessageList={setMessageList}
+                    setShowPoll={setShowPoll}
+                />
+            )}
             <div className="channel">
                 <ChannelHeader
                     newGroupChannel={newGroupChannel}
@@ -72,20 +85,22 @@ export default function Chat({ sb, userId }) {
                     retrieveChannelList={retrieveChannelList}
                 />
                 <div>
-                    <MessageList 
+                    <MessageList
                         sb={sb}
                         newGroupChannel={newGroupChannel}
                         messageList={messageList}
                     />
-                    <MessageInput 
+                    <MessageInput
                         sb={sb}
                         newGroupChannel={newGroupChannel}
                         messageList={messageList}
+                        showPoll={showPoll}
                         setMessageList={setMessageList}
+                        setShowPoll={setShowPoll}
                     />
                 </div>
             </div>
-            <MemberList 
+            <MemberList
                 newGroupChannel={newGroupChannel}
                 mutedMembers={mutedMembers}
                 setMutedMembers={setMutedMembers}
