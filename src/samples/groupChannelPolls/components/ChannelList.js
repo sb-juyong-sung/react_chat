@@ -20,6 +20,12 @@ function ChannelList({sb, newGroupChannel, userId, channelList, setGroupChannel,
                 if (channel.url === newChannel.url) {
                     setMessageList((currentMessageList) => [...currentMessageList, message]);
                 }
+            },
+            onMessageUpdated: (channel, message) => {
+                console.log(message);
+                if (message._poll) {
+                    console.log('hi')
+                }
             }
         });
 
@@ -51,6 +57,12 @@ function ChannelList({sb, newGroupChannel, userId, channelList, setGroupChannel,
             onMessageReceived: (newChannel, message) => {
                 if (channel.url === newChannel.url) {
                     setMessageList((currentMessageList) => [...currentMessageList, message]);
+                }
+            },
+            onMessageUpdated: (newChannel, message) => {
+                console.log(message);
+                if (message._poll) {
+                    console.log('hi')
                 }
             }
         });

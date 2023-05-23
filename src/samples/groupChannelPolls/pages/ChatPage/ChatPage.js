@@ -5,8 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { GroupChannelModule, GroupChannelCreateParams, GroupChannelHandler, GroupChannelCollection, GroupChannelListOrder, GroupChannelFilter } from '@sendbird/chat/groupChannel';
 import { UserMessageCreateParams } from '@sendbird/chat/message';
 import { BaseChannel, createMyGroupChannelListQuery } from '@sendbird/chat';
-
-
+import { Poll, PollVoteEvent } from '@sendbird/chat/poll';
 
 
 export default function Chat({ sb, userId }) {

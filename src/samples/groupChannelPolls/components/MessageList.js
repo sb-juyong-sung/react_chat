@@ -6,19 +6,21 @@ function MessageList({ sb, newGroupChannel, messageList }) {
     const [voteEvent, setVoteEvent] = useState(null);
 
     async function updatePollOption(e, poll, pollId, optionId) {
-        let PollVoteEvent = null;
+
+        let PVoteEvent = null;
         if(e.target.checked) {
-            PollVoteEvent = await newGroupChannel.votePoll(pollId, [optionId]);
+            PVoteEvent = await newGroupChannel.votePoll(pollId, [optionId], voteEvent);
         } else {
-            PollVoteEvent = await newGroupChannel.votePoll(pollId, []);
+            PVoteEvent = await newGroupChannel.votePoll(pollId, [], voteEvent);
         }
         
-        setVoteEvent(PollVoteEvent);
-        console.log(e.target.checked);
+        // for rerendering
+        setVoteEvent(PVoteEvent);  
         
 
-        poll.applyPollVoteEvent(PollVoteEvent);
-        
+        poll.applyPollVoteEvent(PVoteEvent);
+
+
     }
 
     const rendorMessageList = messageList.map((msg) => {

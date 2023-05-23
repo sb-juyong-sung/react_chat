@@ -266,9 +266,9 @@ input{
     overflow-y: scroll;
   }
 
-  .freeze-channel {
+  /* .freeze-channel {
     margin-right: 12px;
-  }
+  } */
   
   .freeze-channel input {
     width: auto;
