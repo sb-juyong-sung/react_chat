@@ -32,7 +32,7 @@ function MessageInput({sb, newGroupChannel, messageList, setMessageList}) {
 
     async function createPoll() {
         const PollCreateParams = {
-            title: 'My poll',
+            title: '',
             optionTexts: [
                 'First option',
                 'Second option',

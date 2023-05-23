@@ -1,12 +1,21 @@
+import { Poll, PollVoteEvent } from '@sendbird/chat/poll';
 import '../pages/ChatPage/ChatPage.css';
 import { useState } from 'react';
 
 function MessageList({ sb, newGroupChannel, messageList }) {
+    const [voteEvent, setVoteEvent] = useState(null);
 
     async function updatePollOption(e, poll, pollId, optionId) {
-        console.log(e);
-        const PollVoteEvent = await newGroupChannel.votePoll(pollId, []);
-        console.log(PollVoteEvent);
+        let PollVoteEvent = null;
+        if(e.target.checked) {
+            PollVoteEvent = await newGroupChannel.votePoll(pollId, [optionId]);
+        } else {
+            PollVoteEvent = await newGroupChannel.votePoll(pollId, []);
+        }
+        
+        setVoteEvent(PollVoteEvent);
+        console.log(e.target.checked);
+        
 
         poll.applyPollVoteEvent(PollVoteEvent);
         
@@ -17,6 +26,11 @@ function MessageList({ sb, newGroupChannel, messageList }) {
 
         if (msg._poll) {
             // console.log(msg._poll.options);
+        }
+        
+        if (voteEvent && voteEvent._payload.message_id === msg.messageId) {
+            // msg._poll.voterCount = voteEvent._payload.voter_count
+            // console.log(voteEvent._payload.voter_count);
         }
 
         return (
