@@ -1,5 +1,5 @@
 import './ChatPage.css';
-import { ChannelList, ChannelHeader, MessageList, MessageInput, MemberList } from '../../components';
+import { ChannelList, ChannelHeader, MessageList, MessageInput, MemberList, UserProfile } from '../../components';
 
 import React, { useState, useEffect } from 'react';
 import { GroupChannelModule, GroupChannelCreateParams, GroupChannelHandler, GroupChannelCollection, GroupChannelListOrder, GroupChannelFilter } from '@sendbird/chat/groupChannel';
@@ -15,9 +15,8 @@ export default function Chat({ sb, userId }) {
     const [messageList, setMessageList] = useState([]);
     const [channelList, setChannelList] = useState([]);
     const [mutedMembers, setMutedMembers] = useState([]);
-    const [newMembersList, setNewMembersList] = useState([]);
-    const [userList, setUserList] = useState([]);
-    
+    const [profileUpdateState, setProfileUpdateState] = useState(false);
+
     const groupChannelFilter = new GroupChannelFilter();
     groupChannelFilter.includeEmpty = true;
     const groupChannelCollection = sb.groupChannel.createGroupChannelCollection();
@@ -37,7 +36,7 @@ export default function Chat({ sb, userId }) {
             setChannelList((currentChannelList) => [...channelsLoad]);
         }
     }
-    
+
     useEffect(() => {
         retrieveChannelList();
     }, []);
@@ -54,15 +53,21 @@ export default function Chat({ sb, userId }) {
         <div className='container'>
             <ChannelList
                 sb={sb}
+                newGroupChannel={newGroupChannel}
                 userId={userId}
                 channelList={channelList}
-                newGroupChannel={newGroupChannel}
+                profileUpdateState={profileUpdateState}
                 setGroupChannel={setGroupChannel}
-                setNewMembersList={setNewMembersList}
                 setChannelHeaderName={setChannelHeaderName}
                 setMessageList={setMessageList}
                 setChannelList={setChannelList}
+                setProfileUpdateState={setProfileUpdateState}
                 retrieveChannelList={retrieveChannelList}
+            />
+            <UserProfile
+                sb={sb}
+                profileUpdateState={profileUpdateState}
+                setProfileUpdateState={setProfileUpdateState}
             />
             <div className="channel">
                 <ChannelHeader
@@ -74,11 +79,11 @@ export default function Chat({ sb, userId }) {
                     retrieveChannelList={retrieveChannelList}
                 />
                 <div>
-                    <MessageList 
+                    <MessageList
                         sb={sb}
                         messageList={messageList}
                     />
-                    <MessageInput 
+                    <MessageInput
                         sb={sb}
                         newGroupChannel={newGroupChannel}
                         messageList={messageList}
@@ -86,12 +91,9 @@ export default function Chat({ sb, userId }) {
                     />
                 </div>
             </div>
-            <MemberList 
-                sb={sb}
+            <MemberList
                 newGroupChannel={newGroupChannel}
                 mutedMembers={mutedMembers}
-                newMembersList={newMembersList}
-                setNewMembersList={setNewMembersList}
                 setMutedMembers={setMutedMembers}
                 retrieveAllUsers={retrieveAllUsers}
             />

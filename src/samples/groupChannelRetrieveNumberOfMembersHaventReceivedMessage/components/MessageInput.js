@@ -23,6 +23,7 @@ function MessageInput({sb, newGroupChannel, messageList, setMessageList}) {
                 .onSucceeded((message) => {
                     setMessageList([...messageList, message]);
                 });
+
             
         } else {
             return null;

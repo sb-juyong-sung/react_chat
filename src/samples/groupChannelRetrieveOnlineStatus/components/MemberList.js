@@ -1,10 +1,10 @@
 import '../pages/ChatPage/ChatPage.css';
 import {useState, useEffect} from 'react';
 
-function MemberList({ newGroupChannel, mutedMembers, setMutedMembers, retrieveAllUsers }) {
+function MemberList({ sb, newGroupChannel, mutedMembers, newMembersList, setMutedMembers, setNewMembersList, retrieveAllUsers }) {
 
-    const [newMembersList, setNewMembersList] = useState([]);
     const [showMembersList, setShowMembersList] = useState(true);
+    // const [currentChannel, handleChannel] = useState(null);
 
     function membersList() {
         if (newGroupChannel) {
@@ -21,10 +21,42 @@ function MemberList({ newGroupChannel, mutedMembers, setMutedMembers, retrieveAl
         }
     }
 
-    async function refreshChannel() {
+    // const handleChannelUpdate = async (channel) => {
+    //     try {
+    //         return await channel.refresh();
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+    // }
+
+    // useEffect(async () => {
+    //     if (newGroupChannel) {
+    //         await handleChannelUpdate(newGroupChannel);
+    //         handleChannel(newGroupChannel)
+    //     }
+    // }, [newGroupChannel]);
+
+    async function refreshChannel(channel) {
         await newGroupChannel.refresh();
-        setNewMembersList(newGroupChannel.members);
+        const queryParams = {userIdsFilter : []}
+        for (let i = 0; i < channel.members.length; i++) {
+            queryParams.userIdsFilter = [...queryParams.userIdsFilter, channel.members[i].nickname]
+        }
+        
+        
+        const query = sb.createApplicationUserListQuery(queryParams);
+
+        const statusList = await query.next();
+    
+        setNewMembersList(statusList);
         setShowMembersList(true);
+        return channel;
+    }
+
+    
+
+    function getStatus(channel) {
+        const c = refreshChannel(channel);
     }
 
     return (
@@ -33,7 +65,7 @@ function MemberList({ newGroupChannel, mutedMembers, setMutedMembers, retrieveAl
                 <h1>Members</h1>
                 <button onClick={() => retrieveAllUsers()}>Invite</button>
                 <div>
-                <button onClick={() => refreshChannel()}>Refresh</button>
+                <button onClick={() => getStatus(newGroupChannel)}>Refresh</button>
                 </div>
                 {membersList()}
             </div>

@@ -15,7 +15,9 @@ export default function Chat({ sb, userId }) {
     const [messageList, setMessageList] = useState([]);
     const [channelList, setChannelList] = useState([]);
     const [mutedMembers, setMutedMembers] = useState([]);
-    const [newMembersList, setNewMembersList] = useState([]);
+    const [showUnreceived, setShowUnreceived] = useState(false);
+    const [countUnreceived, setCountUnreceived] = useState(null);
+    const [currentMessage, setCurrentMessage] = useState(null);
     const [userList, setUserList] = useState([]);
     
     const groupChannelFilter = new GroupChannelFilter();
@@ -37,7 +39,7 @@ export default function Chat({ sb, userId }) {
             setChannelList((currentChannelList) => [...channelsLoad]);
         }
     }
-    
+
     useEffect(() => {
         retrieveChannelList();
     }, []);
@@ -54,11 +56,16 @@ export default function Chat({ sb, userId }) {
         <div className='container'>
             <ChannelList
                 sb={sb}
+                newGroupChannel={newGroupChannel}
                 userId={userId}
                 channelList={channelList}
-                newGroupChannel={newGroupChannel}
+                showUnreceived={showUnreceived}
+                countUnreceived={countUnreceived}
+                currentMessage={currentMessage}
+                setShowUnreceived={setShowUnreceived}
+                setCountUnreceived={setCountUnreceived}
+                setCurrentMessage={setCurrentMessage}
                 setGroupChannel={setGroupChannel}
-                setNewMembersList={setNewMembersList}
                 setChannelHeaderName={setChannelHeaderName}
                 setMessageList={setMessageList}
                 setChannelList={setChannelList}
@@ -76,22 +83,26 @@ export default function Chat({ sb, userId }) {
                 <div>
                     <MessageList 
                         sb={sb}
+                        newGroupChannel={newGroupChannel}
                         messageList={messageList}
+                        showUnreceived={showUnreceived}
+                        countUnreceived={countUnreceived}
+                        currentMessage={currentMessage}
+                        setShowUnreceived={setShowUnreceived}
+                        setCountUnreceived={setCountUnreceived}
+                        setCurrentMessage={setCurrentMessage}
                     />
                     <MessageInput 
                         sb={sb}
                         newGroupChannel={newGroupChannel}
                         messageList={messageList}
-                        setMessageList={setMessageList}
+                        setMessageList={setMessageList}  
                     />
                 </div>
             </div>
             <MemberList 
-                sb={sb}
                 newGroupChannel={newGroupChannel}
                 mutedMembers={mutedMembers}
-                newMembersList={newMembersList}
-                setNewMembersList={setNewMembersList}
                 setMutedMembers={setMutedMembers}
                 retrieveAllUsers={retrieveAllUsers}
             />

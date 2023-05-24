@@ -1,12 +1,14 @@
 import './ChatPage.css';
-import { ChannelList, ChannelHeader, MessageList, MessageInput, MemberList } from '../../components';
+import {
+    ChannelList, ChannelHeader, MessageList, MessageInput, MemberList,
+    CreatePoll, AddOption
+} from '../../components';
 
 import React, { useState, useEffect } from 'react';
 import { GroupChannelModule, GroupChannelCreateParams, GroupChannelHandler, GroupChannelCollection, GroupChannelListOrder, GroupChannelFilter } from '@sendbird/chat/groupChannel';
 import { UserMessageCreateParams } from '@sendbird/chat/message';
 import { BaseChannel, createMyGroupChannelListQuery } from '@sendbird/chat';
-
-
+import { Poll, PollVoteEvent } from '@sendbird/chat/poll';
 
 
 export default function Chat({ sb, userId }) {
@@ -15,9 +17,12 @@ export default function Chat({ sb, userId }) {
     const [messageList, setMessageList] = useState([]);
     const [channelList, setChannelList] = useState([]);
     const [mutedMembers, setMutedMembers] = useState([]);
-    const [newMembersList, setNewMembersList] = useState([]);
+    const [showPoll, setShowPoll] = useState(false);
+    const [showAddOption, setShowAddOption] = useState(false);
+    const [currentPoll, setCurrentPoll] = useState(null);
     const [userList, setUserList] = useState([]);
-    
+
+
     const groupChannelFilter = new GroupChannelFilter();
     groupChannelFilter.includeEmpty = true;
     const groupChannelCollection = sb.groupChannel.createGroupChannelCollection();
@@ -37,7 +42,7 @@ export default function Chat({ sb, userId }) {
             setChannelList((currentChannelList) => [...channelsLoad]);
         }
     }
-    
+
     useEffect(() => {
         retrieveChannelList();
     }, []);
@@ -54,16 +59,33 @@ export default function Chat({ sb, userId }) {
         <div className='container'>
             <ChannelList
                 sb={sb}
+                newGroupChannel={newGroupChannel}
                 userId={userId}
                 channelList={channelList}
-                newGroupChannel={newGroupChannel}
                 setGroupChannel={setGroupChannel}
-                setNewMembersList={setNewMembersList}
                 setChannelHeaderName={setChannelHeaderName}
                 setMessageList={setMessageList}
                 setChannelList={setChannelList}
                 retrieveChannelList={retrieveChannelList}
             />
+            {showPoll && (
+                <CreatePoll
+                    sb={sb}
+                    newGroupChannel={newGroupChannel}
+                    messageList={messageList}
+                    showPoll={showPoll}
+                    setMessageList={setMessageList}
+                    setShowPoll={setShowPoll}
+                />
+            )}
+            {showAddOption && (
+                <AddOption
+                    newGroupChannel={newGroupChannel}
+                    currentPoll={currentPoll}
+                    showAddOption={showAddOption}
+                    setShowAddOption={setShowAddOption}
+                />
+            )}
             <div className="channel">
                 <ChannelHeader
                     newGroupChannel={newGroupChannel}
@@ -74,24 +96,27 @@ export default function Chat({ sb, userId }) {
                     retrieveChannelList={retrieveChannelList}
                 />
                 <div>
-                    <MessageList 
-                        sb={sb}
-                        messageList={messageList}
-                    />
-                    <MessageInput 
+                    <MessageList
                         sb={sb}
                         newGroupChannel={newGroupChannel}
                         messageList={messageList}
+                        showAddOption={showAddOption}
+                        setCurrentPoll={setCurrentPoll}
+                        setShowAddOption={setShowAddOption}
+                    />
+                    <MessageInput
+                        sb={sb}
+                        newGroupChannel={newGroupChannel}
+                        messageList={messageList}
+                        showPoll={showPoll}
                         setMessageList={setMessageList}
+                        setShowPoll={setShowPoll}
                     />
                 </div>
             </div>
-            <MemberList 
-                sb={sb}
+            <MemberList
                 newGroupChannel={newGroupChannel}
                 mutedMembers={mutedMembers}
-                newMembersList={newMembersList}
-                setNewMembersList={setNewMembersList}
                 setMutedMembers={setMutedMembers}
                 retrieveAllUsers={retrieveAllUsers}
             />

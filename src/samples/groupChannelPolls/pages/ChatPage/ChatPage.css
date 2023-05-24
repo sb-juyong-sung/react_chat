@@ -1,0 +1,367 @@
+html, body, #root {
+  height: 100%
+}
+
+button{
+  border: none;
+  color: white;
+  padding: 14px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius:2px;
+  cursor: pointer;
+  background-color: #424242;
+}
+
+input{
+  width: 10%;
+  padding: 6px;
+  border: 1px solid #cbcbcb;
+  outline:none;
+}
+
+.align-left {
+    width: 30%;
+    float: left;
+    border-right: thick solid;
+}
+
+.align-right {
+    width: 85%;
+    float: left;
+}
+
+.container{
+    height:100%;
+    background:white;
+    display: flex;
+  }
+
+
+.channel-list {
+    background: white;
+    flex: 1;
+    border-right: 1px solid #cbcbcb;
+    overflow-y: scroll;
+    margin: 10px;
+    justify-content: center;
+}
+
+.channel-type {
+    padding: 12px;
+    color: #6210CC;
+    display: flex;
+}
+
+.channel{
+    background: white;
+    flex: 3;
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    margin-bottom: 102px;
+    height: 100%;
+  }
+
+  .channel-header{
+    padding: 12px;
+    font-size: 36px;
+    font-weight: 800;
+  }
+
+  .message-input{
+    position: fixed;
+    bottom: 0px;
+    display: flex;
+    border-top: 1px solid #cbcbcb;
+    width: 300%;
+    padding: 12px;
+    background: white;
+  }
+
+  .channel-input{
+    position: fixed;
+    bottom: 0px;
+    display: flex;
+    border-top: 1px solid #cbcbcb;
+    width: 100%;
+    padding: 12px;
+    background: white;
+  }
+
+  .message-item{
+    margin: 12px;
+    display:flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+  }
+
+  .channel-input{
+    position: fixed;
+    bottom: 0px;
+    display: flex;
+    border-top: 1px solid #cbcbcb;
+    width: 100%;
+    padding: 12px;
+    background: white;
+  }
+
+  .send-message-button{
+    border-radius: 0px 4px 4px 0px;
+    margin-right:8px;
+    align-items: center;
+  }
+
+
+  .members-list{
+    border-left: 0px solid #cbcbcb;
+    padding: 12px;
+    /* width: 15%; */
+    flex: 2;
+    align-items: center;
+  }
+
+  .member-item{
+    padding: 8px 0px 0px 0px;
+    cursor: pointer;
+    font-weight: 600;
+    border-bottom: 1px solid #cfcfcf;
+    padding-bottom: 4px;
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .hr-solid {
+    width : 100px;
+    border : 0px;
+    border-top: 5px solid #663399;
+  }
+
+  .message-list{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  
+  }
+
+  .message{
+    border-radius: 8px;
+    width:70%;
+    background: #8a2be2;
+    color:white;
+    padding: 24px;
+    margin-left: 12px;
+  }
+
+  .channel-list-item{
+    background: #fcfcfc;
+    padding:12px;
+    border-top: 1px solid #ececec;
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 42px;
+  }
+
+  .channel-list-item:hover{
+    background:#f0f0f0;
+  }
+  
+  .channel-list-item:hover .channel-icon{
+    visibility: visible;
+  }
+
+  .channel-list-item-name{
+    font-weight: 600;
+    cursor: pointer;
+    overflow: hidden;
+    max-width: 75ch;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex:1;
+  }
+  
+
+
+  .members{
+    display: grid;
+    place-items: center;
+    /* justify-content: center;
+    align-items: center; */
+  }
+
+
+  .message-info{
+    margin-bottom:4px;
+    display: flex;
+    justify-content: space-between;
+    line-height: 24px;
+  }
+
+
+  .oc-message-sender-name{
+    color:#6210CC;
+    margin-left:4px;
+    font-weight: 600;
+    margin-right:4px;
+  }
+  
+  .message-sender-name{
+    font-weight: 600;
+    margin-right:4px;
+  }
+
+  .message.message-from-you{
+    margin-left: auto;
+    background: #39a9ff;
+    flex-direction: row;
+    margin-right: 12px;
+  }
+  
+  .message-item.message-from-you{
+    flex-direction: row;
+  }
+
+
+  .oc-message, .oc-message-og-tags{
+    padding:12px;
+    display:flex;
+  }
+  
+  .oc-message-og-tags {
+    flex-direction: column;
+    max-width: 50%;
+    padding: 5px;
+    margin-left: 7vw;
+    margin-top: -10px;
+    box-sizing: border-box;
+    border: 1px solid black;
+  }
+  
+  .oc-message, .message-og-tags {
+    padding:12px 0px;
+    display:flex;
+  }
+  
+  .message-og-tags {
+    flex-direction: column;
+    padding: 5px;
+    box-sizing: border-box;
+  }
+
+  .control-button {
+    /* background: inherit; */
+    padding:4px;
+    margin-right:1px;
+    /* color: #39a9ff; */
+  }
+
+
+  .oc-members-list {
+    margin-bottom: 80px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+  }
+
+  /* .freeze-channel {
+    margin-right: 12px;
+  } */
+  
+  .freeze-channel input {
+    width: auto;
+  }
+
+  .input_wrapper {
+    margin-bottom: 5px;
+  }
+
+  .input_wrapper input[type="text"] {
+    width: 60%;
+  }
+
+  .option_wrapper:hover .option-icon {
+    visibility: visible;
+  }
+  
+  .option_wrapper label, .add-new-option {
+    margin-right: 10px;
+  }
+
+
+  .overlay{
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background: #ecececb0;
+    z-index: 1;
+  }
+  
+  .overlay-content{
+    overflow-y: scroll;
+    max-height: 400px;
+    padding:80px;
+    opacity: 1;
+    background: white;
+    border: 1px solid #cbcbcb;
+    width: 40%;
+  }
+
+  .create-poll-modal, .create-poll-modal_inputs {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .create-poll-modal {
+    position: relative;
+  }
+  
+  .create-poll-modal input {
+    padding: 14px 32px 14px 6px;
+  }
+  
+  .create-poll-modal_inputs {
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  
+  .create-poll-modal .input_wrapper {
+    margin-bottom: 5px;
+  }
+  
+  .create-poll-modal .input_wrapper input[type="text"] {
+    width: 60%;
+  }
+  
+  .create-poll-modal h3 {
+    text-align: center;
+  }
+
+  .poll-close_btn {
+    position: absolute;
+    top: 40px;
+    right: 40px;
+    cursor: pointer;
+  }
+  
+  .poll-create_btn {
+    margin: 0 auto;
+  }
+
+  .poll-options {
+    width: 100%;
+  }
+
+  .options_item {
+    padding: 0 4px;
+    margin-right: 4px;
+    background: #cbcbcb;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+  }

@@ -2,7 +2,10 @@ import '../pages/ChatPage/ChatPage.css';
 
 import { GroupChannelHandler } from '@sendbird/chat/groupChannel';
 
-function ChannelList({sb, userId, channelList, newGroupChannel, setGroupChannel, setNewMembersList, setChannelHeaderName, setMessageList, setChannelList, retrieveChannelList}) {
+function ChannelList({sb, newGroupChannel, userId, channelList, 
+    showUnreceived, countUnreceived, currentMessage,
+    setShowUnreceived, setCountUnreceived, setCurrentMessage,
+    setGroupChannel, setChannelHeaderName, setMessageList, setChannelList, retrieveChannelList}) {
 
     // 채널 생성
     const createChannel = async (channelName) => {
@@ -23,14 +26,16 @@ function ChannelList({sb, userId, channelList, newGroupChannel, setGroupChannel,
             }
         });
 
-        sb.groupChannel.addGroupChannelHandler(newChannel.url, channelHandler);
+        sb.groupChannel.addGroupChannelHandler('abcd', channelHandler);
         retrieveChannelList();
         setMessageList([]);
 
-        setNewMembersList(newChannel.members);
+        setShowUnreceived(false);
+        setCountUnreceived(0);
+        setCurrentMessage(null);
 
-        const userIds = ['qa', 'wef'];
-        await newChannel.inviteWithUserIds(userIds);
+        // const userIds = ['qa', 'wef'];
+        // await newChannel.inviteWithUserIds(userIds);
     }
 
     // 채널 삭제
@@ -45,11 +50,12 @@ function ChannelList({sb, userId, channelList, newGroupChannel, setGroupChannel,
         const PreviousMessageListQueryParams = {}
         const PreviousMessageListQuery = channel.createPreviousMessageListQuery(PreviousMessageListQueryParams);
         const messages = await PreviousMessageListQuery.load();
-        const refreshChannel = await channel.refresh();
         setMessageList(messages)
         setGroupChannel(channel);
         setChannelHeaderName(channel.name);
-        setNewMembersList(channel.members);
+        setShowUnreceived(false);
+        setCountUnreceived(0);
+        setCurrentMessage(null);
 
         const channelHandler = new GroupChannelHandler({
             onMessageReceived: (newChannel, message) => {

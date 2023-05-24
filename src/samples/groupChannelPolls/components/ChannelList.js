@@ -2,7 +2,7 @@ import '../pages/ChatPage/ChatPage.css';
 
 import { GroupChannelHandler } from '@sendbird/chat/groupChannel';
 
-function ChannelList({sb, userId, channelList, newGroupChannel, setGroupChannel, setNewMembersList, setChannelHeaderName, setMessageList, setChannelList, retrieveChannelList}) {
+function ChannelList({sb, newGroupChannel, userId, channelList, setGroupChannel, setChannelHeaderName, setMessageList, setChannelList, retrieveChannelList}) {
 
     // 채널 생성
     const createChannel = async (channelName) => {
@@ -20,14 +20,18 @@ function ChannelList({sb, userId, channelList, newGroupChannel, setGroupChannel,
                 if (channel.url === newChannel.url) {
                     setMessageList((currentMessageList) => [...currentMessageList, message]);
                 }
+            },
+            onMessageUpdated: (channel, message) => {
+                console.log(message);
+                if (message._poll) {
+                    console.log('hi')
+                }
             }
         });
 
-        sb.groupChannel.addGroupChannelHandler(newChannel.url, channelHandler);
+        sb.groupChannel.addGroupChannelHandler('abcd', channelHandler);
         retrieveChannelList();
         setMessageList([]);
-
-        setNewMembersList(newChannel.members);
 
         const userIds = ['qa', 'wef'];
         await newChannel.inviteWithUserIds(userIds);
@@ -45,16 +49,20 @@ function ChannelList({sb, userId, channelList, newGroupChannel, setGroupChannel,
         const PreviousMessageListQueryParams = {}
         const PreviousMessageListQuery = channel.createPreviousMessageListQuery(PreviousMessageListQueryParams);
         const messages = await PreviousMessageListQuery.load();
-        const refreshChannel = await channel.refresh();
         setMessageList(messages)
         setGroupChannel(channel);
         setChannelHeaderName(channel.name);
-        setNewMembersList(channel.members);
 
         const channelHandler = new GroupChannelHandler({
             onMessageReceived: (newChannel, message) => {
                 if (channel.url === newChannel.url) {
                     setMessageList((currentMessageList) => [...currentMessageList, message]);
+                }
+            },
+            onMessageUpdated: (newChannel, message) => {
+                console.log(message);
+                if (message._poll) {
+                    console.log('hi')
                 }
             }
         });

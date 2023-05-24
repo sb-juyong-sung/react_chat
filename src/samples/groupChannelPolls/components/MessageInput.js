@@ -1,6 +1,7 @@
 import '../pages/ChatPage/ChatPage.css';
 
-function MessageInput({sb, newGroupChannel, messageList, setMessageList}) {
+function MessageInput({sb, newGroupChannel, messageList, showPoll, 
+    setMessageList, setShowPoll}) {
 
     function clickEnter(e) {
         if (e.key === 'Enter') {
@@ -30,11 +31,19 @@ function MessageInput({sb, newGroupChannel, messageList, setMessageList}) {
 
     }
 
+    function handleShowPoll() {
+        setShowPoll(!showPoll);
+    }
+
+
     return (
         <div className="message-input">
             <input id='textMessage' type="text" onKeyPress={clickEnter}></input>
             <div>
                 <button className="send-message-button" onClick={() => sendMessage(document.getElementById('textMessage').value)}>send</button>
+            </div>
+            <div>
+                <button className="create-poll" onClick={() => handleShowPoll()}>Create Poll</button>
             </div>
         </div>
     );
