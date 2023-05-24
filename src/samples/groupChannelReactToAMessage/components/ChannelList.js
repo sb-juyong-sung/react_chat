@@ -2,8 +2,8 @@ import '../pages/ChatPage/ChatPage.css';
 
 import { GroupChannelHandler } from '@sendbird/chat/groupChannel';
 
-function ChannelList({sb, newGroupChannel, userId, channelList, messageList, 
-    setGroupChannel, setChannelHeaderName, setMessageList, setChannelList, retrieveChannelList}) {
+function ChannelList({ sb, newGroupChannel, userId, channelList, messageList,
+    setGroupChannel, setChannelHeaderName, setMessageList, setChannelList, retrieveChannelList }) {
 
     // 채널 생성
     const createChannel = async (channelName) => {
@@ -23,6 +23,7 @@ function ChannelList({sb, newGroupChannel, userId, channelList, messageList,
                 }
             },
             onReactionUpdated: (channel, reactionEvent) => {
+                console.log(reactionEvent);
             }
         });
 
@@ -35,14 +36,14 @@ function ChannelList({sb, newGroupChannel, userId, channelList, messageList,
     }
 
     // 채널 삭제
-    async function deleteChannel(channel){
+    async function deleteChannel(channel) {
         await channel.delete();
         setChannelList(channelList.filter(item => item.url !== channel.url));
     }
 
     // 채널을 클릭하였을 시 채널에 입장하는 효과
     async function loadChannel(channel) {
-        {newGroupChannel && sb.groupChannel.removeGroupChannelHandler(newGroupChannel.url)};
+        { newGroupChannel && sb.groupChannel.removeGroupChannelHandler(newGroupChannel.url) };
         const PreviousMessageListQueryParams = {
             includeReactions: true,
         }
@@ -59,35 +60,37 @@ function ChannelList({sb, newGroupChannel, userId, channelList, messageList,
                 }
             },
             onReactionUpdated: (channel, reactionEvent) => {
+                const messageIndex = messages.findIndex((item => item.messageId === reactionEvent.messageId));
+                messages[messageIndex].applyReactionEvent(reactionEvent);
+                setMessageList(messages);
             }
         });
-
         sb.groupChannel.addGroupChannelHandler(channel.url, channelHandler);
         retrieveChannelList();
     }
 
     return (
         <div className="channel-list">
-                <div className="channel-type">
-                    <h1>Channel List</h1>
-                </div>
-                <div>
-                    {channelList.map((channel) => (
-                        <div key={channel.url} className='channel-list-item'>
-                            <div className='channel-list-item-name' 
-                                onClick={() => {loadChannel(channel)}} key={channel.url}>{channel.name}
-                            </div>
-                            <div>
-                                <button className='control-button' onClick={() => deleteChannel(channel)}>del</button>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-                <div className="channel-input">
-                    <input id='channelName' type="text"></input>
-                    <button onClick={() => createChannel(document.getElementById('channelName').value)}>create</button>
-                </div>
+            <div className="channel-type">
+                <h1>Channel List</h1>
             </div>
+            <div>
+                {channelList.map((channel) => (
+                    <div key={channel.url} className='channel-list-item'>
+                        <div className='channel-list-item-name'
+                            onClick={() => { loadChannel(channel) }} key={channel.url}>{channel.name}
+                        </div>
+                        <div>
+                            <button className='control-button' onClick={() => deleteChannel(channel)}>del</button>
+                        </div>
+                    </div>
+                ))}
+            </div>
+            <div className="channel-input">
+                <input id='channelName' type="text"></input>
+                <button onClick={() => createChannel(document.getElementById('channelName').value)}>create</button>
+            </div>
+        </div>
     );
 }
 
