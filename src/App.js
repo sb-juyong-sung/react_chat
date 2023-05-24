@@ -1,3 +1,6 @@
+import { Routes, Route } from 'react-router-dom';
+import Home from './Home';
+
 import BasicGroupChannelSample from './samples/basicGroupChannel/BasicGroupChannel';
 import BasicOpenChannelSample from './samples/basicOpenChannel/BasicOpenChannel';
 
@@ -16,6 +19,7 @@ import GroupChannelMessageThreading from './samples/groupChannelMessageThreading
 import GroupChannelUserProfileUpdate from './samples/groupChannelUserProfileUpdate/GroupChannelUserProfileUpdate';
 import GroupChannelRetrieveNumberOfMembersHaventReceivedMessage from './samples/groupChannelRetrieveNumberOfMembersHaventReceivedMessage/GroupChannelRetrieveNumberOfMembersHaventReceivedMessage';
 import GroupChannelPolls from './samples/groupChannelPolls/GroupChannelPolls';
+import GroupChannelReactToAMessage from './samples/groupChannelReactToAMessage/GroupChannelReactToAMessage';
 
 import OpenChannelSendAnAdminMessage from './samples/openChannelSendAnAdminMessage/OpenChannelSendAnAdminMessage';
 import OpenChannelCopyMessage from './samples/openChannelCopyMessage/OpenChannelCopyMessage';
@@ -37,7 +41,31 @@ const App = () => {
   );
 
   return (
-    <GroupChannelPolls sb={sb} />
+    <Routes>
+      <Route path='/' element={<Home />} />
+      <Route path='/group-channel' element={<BasicGroupChannelSample sb={sb} />} />
+      <Route path='/open-channel' element={<BasicOpenChannelSample sb={sb} />} />
+      <Route path='/group-channel-mute-unmute-users' element={<GroupChannelMuteUnmuteUsers sb={sb} />} />
+      <Route path='/group-channel-retrieve-a-list-of-banned-or-muted-users' element={<GroupChannelRetrieveAListOfBannedOrMutedUsers sb={sb} />} />
+      <Route path='/group-channel-ban-unban-users' element={<GroupChannelBanUnbanUsers sb={sb} />} />
+      <Route path='/group-channel-operators-list' element={<GroupChannelOperatorsList sb={sb} />} />
+      <Route path='/group-channel-register-unregister-operator' element={<GroupChannelRegisterUnregisterOperator sb={sb} />} />
+      <Route path='/group-channel-typing-indicator' element={<GroupChannelTypingIndicator sb={sb} />} />
+      <Route path='/group-channel-send-an-admin-message' element={<GroupChannelSendAnAdminMessage sb={sb} />} />
+      <Route path='/group-channel-freeze-unfreeze' element={<GroupChannelFreezeUnfreeze sb={sb} />} />
+      <Route path='/group-channel-mark-message-as-read' element={<GroupChannelMarkMessagesAsRead sb={sb} />} />
+      <Route path='/group-channel-retrieve-online-status' element={<GroupChannelRetrieveOnlineStatus sb={sb} />} />
+      <Route path='/group-channel-retrieve-number-of-members-havent-read-message' element={<GroupChannelRetrieveNumberOfMembersHaventReadMessage sb={sb} />} />
+      <Route path='/group-channel-message-threading' element={<GroupChannelMessageThreading sb={sb} />} />
+      <Route path='/group-channel-user-profile-update' element={<GroupChannelUserProfileUpdate sb={sb} />} />
+      <Route path='/group-channel-retrieve-number-of-members-havent-received-message' element={<GroupChannelRetrieveNumberOfMembersHaventReceivedMessage sb={sb} />} />
+      <Route path='/group-channel-polls' element={<GroupChannelPolls sb={sb} />} />
+      <Route path='/group-channel-react-to-a-message' element={<GroupChannelReactToAMessage sb={sb} />} />
+      <Route path='/open-channel-send-an-admin-message' element={<OpenChannelSendAnAdminMessage sb={sb} />} />
+      <Route path='/open-channel-copy-message' element={<OpenChannelCopyMessage sb={sb} />} />
+      <Route path='/open-channel-freeze' element={<OpenChannelFreeze sb={sb} />} />
+    </Routes>
+    
     
   );
 }
