@@ -56,6 +56,7 @@ export default function Chat({ sb, userId }) {
                 newGroupChannel={newGroupChannel}
                 userId={userId}
                 channelList={channelList}
+                messageList={messageList}
                 setGroupChannel={setGroupChannel}
                 setChannelHeaderName={setChannelHeaderName}
                 setMessageList={setMessageList}

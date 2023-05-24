@@ -11,9 +11,9 @@ function MessageList({ sb, newGroupChannel, messageList }) {
 
     async function addMessageReaction(message, e) {
         const emojiKey = e.target.innerText;
-        console.log(emojiKey);
         const reactionEvent = await newGroupChannel.addReaction(message, emojiKey);
         message.applyReactionEvent(reactionEvent);
+        
     }
 
     const rendorMessageList = messageList.map((msg) => {
@@ -26,7 +26,13 @@ function MessageList({ sb, newGroupChannel, messageList }) {
                         <div>{msg.createAt}</div>
                     </div>
                     <div>{msg.message}</div>
-
+                    {msg.reactions.length > 0 && 
+                        <div className='reactions'>
+                            {msg.reactions.map((reaction, i) => {
+                                return <span className="reactions-item" key={i}>{reaction.key}</span>
+                            })}
+                        </div>
+                    }
                     <div className='react-button-wrapper'>
                         {showReaction &&
                             <ul className="reactions-list">

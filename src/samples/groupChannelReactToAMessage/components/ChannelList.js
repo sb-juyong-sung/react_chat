@@ -2,7 +2,8 @@ import '../pages/ChatPage/ChatPage.css';
 
 import { GroupChannelHandler } from '@sendbird/chat/groupChannel';
 
-function ChannelList({sb, newGroupChannel, userId, channelList, setGroupChannel, setChannelHeaderName, setMessageList, setChannelList, retrieveChannelList}) {
+function ChannelList({sb, newGroupChannel, userId, channelList, messageList,
+    setGroupChannel, setChannelHeaderName, setMessageList, setChannelList, retrieveChannelList}) {
 
     // 채널 생성
     const createChannel = async (channelName) => {
@@ -22,7 +23,8 @@ function ChannelList({sb, newGroupChannel, userId, channelList, setGroupChannel,
                 }
             },
             onReactionUpdated: (channel, reactionEvent) => {
-                console.log(reactionEvent);
+                const messageIndex = messageList.findIndex((item => item.messageId === reactionEvent.messageId));
+                console.log(messageList[messageIndex]);
             }
         });
 
@@ -43,7 +45,9 @@ function ChannelList({sb, newGroupChannel, userId, channelList, setGroupChannel,
     // 채널을 클릭하였을 시 채널에 입장하는 효과
     async function loadChannel(channel) {
         {newGroupChannel && sb.groupChannel.removeGroupChannelHandler(newGroupChannel.url)};
-        const PreviousMessageListQueryParams = {}
+        const PreviousMessageListQueryParams = {
+            includeReactions: true,
+        }
         const PreviousMessageListQuery = channel.createPreviousMessageListQuery(PreviousMessageListQueryParams);
         const messages = await PreviousMessageListQuery.load();
         setMessageList(messages)
@@ -55,6 +59,8 @@ function ChannelList({sb, newGroupChannel, userId, channelList, setGroupChannel,
                 if (channel.url === newChannel.url) {
                     setMessageList((currentMessageList) => [...currentMessageList, message]);
                 }
+            },
+            onReactionUpdated: (channel, reactionEvent) => {
             }
         });
 

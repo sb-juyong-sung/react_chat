@@ -298,3 +298,16 @@ input{
     margin-right: 2px;
     padding: 4px;
   }
+
+  .reactions {
+    margin: 5px 0 0;
+  }
+
+  .reactions-item {
+    cursor: pointer;
+    margin-right: 5px;
+  }
+  
+  .reactions-item-inner {
+    font-size: 10px;
+  }
