@@ -1,7 +1,7 @@
 import '../pages/ChatPage/ChatPage.css';
 import { useState } from 'react';
 
-function MessageList({ sb, messageList }) {
+function MessageList({ sb, newGroupChannel, messageList }) {
 
     const [showReaction, setShowReaction] = useState(false);
 
@@ -9,8 +9,11 @@ function MessageList({ sb, messageList }) {
         setShowReaction(!showReaction);
     }
 
-    function addMessageReaction() {
-
+    async function addMessageReaction(message, e) {
+        const emojiKey = e.target.innerText;
+        console.log(emojiKey);
+        const reactionEvent = await newGroupChannel.addReaction(message, emojiKey);
+        message.applyReactionEvent(reactionEvent);
     }
 
     const rendorMessageList = messageList.map((msg) => {

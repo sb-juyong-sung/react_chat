@@ -74,6 +74,7 @@ export default function Chat({ sb, userId }) {
                 <div>
                     <MessageList 
                         sb={sb}
+                        newGroupChannel={newGroupChannel}
                         messageList={messageList}
                     />
                     <MessageInput 
