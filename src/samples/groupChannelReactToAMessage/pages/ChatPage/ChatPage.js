@@ -77,6 +77,7 @@ export default function Chat({ sb, userId }) {
                         sb={sb}
                         newGroupChannel={newGroupChannel}
                         messageList={messageList}
+                        setMessageList={setMessageList}
                     />
                     <MessageInput 
                         sb={sb}

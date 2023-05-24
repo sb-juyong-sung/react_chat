@@ -2,7 +2,7 @@ import '../pages/ChatPage/ChatPage.css';
 
 import { GroupChannelHandler } from '@sendbird/chat/groupChannel';
 
-function ChannelList({sb, newGroupChannel, userId, channelList, messageList,
+function ChannelList({sb, newGroupChannel, userId, channelList, messageList, 
     setGroupChannel, setChannelHeaderName, setMessageList, setChannelList, retrieveChannelList}) {
 
     // 채널 생성
@@ -23,8 +23,6 @@ function ChannelList({sb, newGroupChannel, userId, channelList, messageList,
                 }
             },
             onReactionUpdated: (channel, reactionEvent) => {
-                const messageIndex = messageList.findIndex((item => item.messageId === reactionEvent.messageId));
-                console.log(messageList[messageIndex]);
             }
         });
 

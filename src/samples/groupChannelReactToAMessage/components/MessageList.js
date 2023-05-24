@@ -1,7 +1,8 @@
 import '../pages/ChatPage/ChatPage.css';
 import { useState } from 'react';
 
-function MessageList({ sb, newGroupChannel, messageList }) {
+function MessageList({ sb, newGroupChannel, messageList, 
+    setMessageList }) {
 
     const [showReaction, setShowReaction] = useState(false);
 
@@ -13,7 +14,11 @@ function MessageList({ sb, newGroupChannel, messageList }) {
         const emojiKey = e.target.innerText;
         const reactionEvent = await newGroupChannel.addReaction(message, emojiKey);
         message.applyReactionEvent(reactionEvent);
-        
+        setMessageList((prevMessageList) => 
+            prevMessageList.map((prevMessage) =>
+                prevMessage.messageId === message.messageId ? message : prevMessage
+            )
+        );
     }
 
     const rendorMessageList = messageList.map((msg) => {
