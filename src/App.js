@@ -35,7 +35,7 @@ const App = () => {
     appId: "C05427B5-F36B-4445-BFB5-393B3A721C8C",
     modules: [
       new GroupChannelModule(),
-      new OpenChannelModule(),
+      // new OpenChannelModule(),
     ],
   }
   );

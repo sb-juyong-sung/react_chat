@@ -23,7 +23,6 @@ function ChannelList({ sb, newGroupChannel, userId, channelList, messageList,
                 }
             },
             onReactionUpdated: (channel, reactionEvent) => {
-                console.log(reactionEvent);
             }
         });
 
@@ -60,9 +59,9 @@ function ChannelList({ sb, newGroupChannel, userId, channelList, messageList,
                 }
             },
             onReactionUpdated: (channel, reactionEvent) => {
-                const messageIndex = messages.findIndex((item => item.messageId === reactionEvent.messageId));
-                messages[messageIndex].applyReactionEvent(reactionEvent);
-                setMessageList(messages);
+                // console.log(messages);
+                // const messageIndex = messages.findIndex((item => item.messageId === reactionEvent.messageId));
+                // messages[messageIndex].applyReactionEvent(reactionEvent);
             }
         });
         sb.groupChannel.addGroupChannelHandler(channel.url, channelHandler);
