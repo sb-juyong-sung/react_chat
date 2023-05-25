@@ -19,9 +19,10 @@ export default function Chat({ sb, userId }) {
     
     const groupChannelFilter = new GroupChannelFilter();
     groupChannelFilter.includeEmpty = true;
-    const groupChannelCollection = sb.groupChannel.createGroupChannelCollection();
-    groupChannelCollection.filter = groupChannelFilter;
-    groupChannelCollection.order = GroupChannelListOrder.CHRONOLOGICAL;
+    const groupChannelCollection = sb.groupChannel.createGroupChannelCollection({
+        filter: groupChannelFilter,
+        order: GroupChannelListOrder.CHRONOLOGICAL,
+    });
     const channelRetreiveHandler = {
         onchannelsAdded: (context, channels) => {
             console.log(channels)
@@ -56,6 +57,7 @@ export default function Chat({ sb, userId }) {
                 newGroupChannel={newGroupChannel}
                 userId={userId}
                 channelList={channelList}
+                messageList={messageList}
                 setGroupChannel={setGroupChannel}
                 setChannelHeaderName={setChannelHeaderName}
                 setMessageList={setMessageList}
@@ -74,7 +76,9 @@ export default function Chat({ sb, userId }) {
                 <div>
                     <MessageList 
                         sb={sb}
+                        newGroupChannel={newGroupChannel}
                         messageList={messageList}
+                        setMessageList={setMessageList}
                     />
                     <MessageInput 
                         sb={sb}
